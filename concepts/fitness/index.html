@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<title>Pinch, a bouldering gym in Gowanus (concept)</title>
+<meta name="description" content="Pinch is a bouldering gym in Gowanus, Brooklyn: short walls, thick mats, new problems every week and a coach on your first visit. A concept site.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  Concept site for the Kinetic portfolio. Pinch is not a real gym.
+  Direction: the page is the climbing wall. Slate wall blue panels, hold pink, chalk white, set in Gabarito.
+  The first screen is the headline set huge, and a pink route bolts itself onto the letters, start to top.
+  Photos, free Pexels licence (pexels.com/license), all by Pavel Danilyuk:
+    pinch-overhang.jpg pexels.com/photo/7590980
+    pinch-reach.jpg    pexels.com/photo/7590972
+    pinch-mats.jpg     pexels.com/photo/7591312
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#2F4B6E;      /* the painted plywood panels */
+  --wall-deep:#284262; /* a panel turned away from the lights */
+  --wall-lift:#35547A; /* a panel facing the lights */
+  --seam:#22385A;      /* the gap between two panels */
+  --chalk:#F3F5F7;     /* chalk on a hand */
+  --dust:#BBC8D8;      /* chalk dust on the wall: quiet text */
+  --line:rgba(243,245,247,.16);
+  --hold:#FF5C99;      /* one route, one colour */
+  --hold-deep:#D93A78; /* the hold's shaded side */
+  --hold-lit:#FF96BF;  /* the hold's lit edge */
+  --bolt:#13202F;      /* the bolt and anything printed on pink */
+  --ease:cubic-bezier(.23,1,.32,1);
+  --spring:linear(0, 0.0512, 0.1778, 0.344, 0.5214, 0.6893, 0.8346, 0.9503, 1.0345, 1.089, 1.1179, 1.1263, 1.12, 1.104, 1.083, 1.0606, 1.0394, 1.021, 1.0064, 0.9957, 0.9888, 0.9851, 0.984, 0.9848, 0.9868, 0.9895, 0.9923, 0.995, 0.9973, 0.9992, 1);
+  --gut:56px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{background:var(--wall);color:var(--chalk);font-family:"Gabarito",system-ui,sans-serif;font-size:18px;line-height:1.5;overflow-x:clip}
+::selection{background:var(--hold);color:var(--bolt)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--hold);outline-offset:3px;border-radius:6px}
+img{display:block;max-width:100%}
+p,li{text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
+.concept{background:var(--bolt);color:var(--dust);font-size:14px;line-height:1.4;text-align:center;padding:8px 16px}
+
+/* top bar */
+.bar{height:76px;display:flex;align-items:center;gap:40px;position:relative;z-index:2}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:28px;letter-spacing:-.02em;text-decoration:none;line-height:1}
+.logo svg{width:26px;height:30px;flex:none}
+.bar nav{display:flex;gap:32px;margin-left:auto}
+.bar nav a{text-decoration:none;color:var(--dust);font-weight:500;font-size:17px;transition:color .15s ease}
+.ghost{display:inline-flex;align-items:center;height:46px;padding:0 22px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--chalk);text-decoration:none;font-weight:600;font-size:17px;white-space:nowrap;transition:background-color .15s ease,color .15s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:58px;padding:0 30px;border-radius:999px;background:var(--hold);color:var(--bolt);font-weight:700;font-size:18px;text-decoration:none;white-space:nowrap;border:0;transition:background-color .15s ease,transform .14s var(--ease)}
+.btn:active,.ghost:active,.book:active,.day:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  .bar nav a:hover{color:var(--chalk)}
+  .ghost:hover,.book:hover{background:var(--chalk);color:var(--bolt)}
+  .btn:hover{background:#FF78AC}
+  .day:not([aria-selected="true"]):hover{background:rgba(243,245,247,.1)}
+}
+
+/* first screen: the wall, the words, the route */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.facets{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero-in{min-height:calc(100svh - 113px);display:flex;flex-direction:column;justify-content:center;padding-top:28px;padding-bottom:64px}
+.type{position:relative}
+h1{font-weight:800;font-size:clamp(52px,min(15.4vw,calc(40.65svh - 148.4px)),226px);line-height:1.1;letter-spacing:-.03em;padding-top:.26em}
+h1 span{display:block;white-space:nowrap}
+.route{position:absolute;inset:0;pointer-events:none}
+.sub{margin-top:52px;font-size:23px;line-height:1.45;color:var(--dust);max-width:31em}
+.act{margin-top:32px;display:flex;align-items:center;gap:20px 28px;flex-wrap:wrap}
+.hours{color:var(--dust);font-size:17px}
+
+/* a hold: placed by script on the letters, drawn once, bolted on with a spring */
+.hold{position:absolute;width:var(--sz,64px);height:var(--sz,64px);margin:calc(var(--sz,64px) * -.5) 0 0 calc(var(--sz,64px) * -.5);transform:rotate(var(--r,0deg));filter:drop-shadow(0 calc(var(--sz,64px) * .07) calc(var(--sz,64px) * .06) rgba(10,20,36,.55))}
+.hold .h{position:absolute;inset:0}
+.hold svg.shape{width:100%;height:100%;display:block;overflow:visible}
+.hold .bolt{position:absolute;left:var(--bx,50%);top:var(--by,55%);width:19%;height:19%;margin:-9.5% 0 0 -9.5%}
+.js .route .h,.js .steps .h{opacity:0}
+.route.go .h,.steps .go .h{animation:bolt .62s var(--spring) both,show .16s ease-out both;animation-delay:var(--t,0s)}
+.route.go .bolt,.steps .go .bolt{animation:drive .5s cubic-bezier(.2,.75,.25,1) both;animation-delay:calc(var(--t,0s) + .1s)}
+@keyframes bolt{from{transform:translateY(-9%) scale(1.26) rotate(-38deg)}to{transform:none}}
+@keyframes show{from{opacity:0}to{opacity:1}}
+@keyframes drive{from{transform:rotate(-560deg)}to{transform:rotate(0deg)}}
+/* tape beside the start and the top hold, the way a gym marks a route */
+.tape{position:absolute;translate:0 -50%;rotate:-3deg;padding:5px 10px 4px;background:var(--chalk);color:var(--bolt);font-weight:700;font-size:15px;line-height:1.1;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 3px) 34%,100% 62%,calc(100% - 2px) 100%,0 100%,3px 70%,0 40%,2px 12%)}
+.tape.below{translate:-50% 0;rotate:3deg}
+.js .route .tape{opacity:0}
+.route.go .tape{animation:tape .34s var(--ease) both;animation-delay:calc(var(--t,0s) + .4s)}
+@keyframes tape{from{opacity:0;scale:1.15}to{opacity:1;scale:1}}
+
+/* sections */
+section.sec{padding:120px 0 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 64px;align-items:end}
+h2{font-weight:800;font-size:clamp(40px,4.6vw,68px);line-height:1;letter-spacing:-.03em}
+.sec-head p,.lead{font-size:20px;color:var(--dust);max-width:30em}
+
+/* classes */
+.days{display:flex;gap:8px;margin-top:44px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;height:46px;min-width:64px;padding:0 18px;border-radius:999px;border:0;background:transparent;color:var(--chalk);font:inherit;font-weight:600;font-size:17px;box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;transition:background-color .15s ease,color .15s ease,box-shadow .15s ease,transform .14s var(--ease)}
+.day[aria-selected="true"]{background:var(--chalk);color:var(--bolt);box-shadow:none}
+.day .today{font-weight:500;opacity:.7;margin-left:6px}
+.list{list-style:none;margin-top:28px;border-top:1px solid var(--line);min-height:calc(3 * 100px + 1px)}
+.row{display:grid;grid-template-columns:190px minmax(0,1fr) auto;align-items:center;gap:8px 32px;padding:22px 0;border-bottom:1px solid var(--line)}
+.time{font-weight:700;font-size:30px;line-height:1.1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.what b{display:block;font-weight:700;font-size:22px;line-height:1.25}
+.what span{display:block;color:var(--dust);font-size:17px;margin-top:2px}
+.book{display:inline-flex;align-items:center;height:46px;padding:0 22px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--chalk);text-decoration:none;font-weight:600;font-size:17px;transition:background-color .15s ease,color .15s ease,transform .14s var(--ease)}
+.list.out .row{opacity:0;transform:translateY(-8px);transition:opacity .12s ease,transform .12s ease}
+.list .row.in{animation:rowin .32s var(--ease) both;animation-delay:var(--d,0s)}
+@keyframes rowin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* the wall */
+.pics{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-top:52px}
+.pics figure{border-radius:20px;overflow:hidden;height:clamp(300px,34vw,500px);background:var(--wall-deep)}
+.pics img{width:100%;height:100%;object-fit:cover}
+.walls{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 40px;margin-top:48px}
+.walls b{display:block;font-weight:700;font-size:24px;line-height:1.2}
+.walls span{display:block;color:var(--dust);font-size:17px;margin-top:6px}
+.walls em{display:block;font-style:normal;font-weight:600;font-size:17px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* first visit: the steps are a route of their own */
+.visit-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:72px;align-items:center}
+.steps{list-style:none;margin-top:44px;display:grid;gap:34px}
+.steps li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:22px;align-items:start}
+.steps .spot{position:relative;height:64px}
+.steps li:nth-child(even) .spot{left:16px}
+.steps .hold{left:32px;top:30px;--sz:56px}
+.steps b{display:block;font-weight:700;font-size:22px;line-height:1.25}
+.steps p{color:var(--dust);font-size:17px;margin-top:4px;max-width:30em}
+.visit .act{margin-top:44px}
+.visit .act span{color:var(--dust);font-size:17px;max-width:20em}
+.v-pic{border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--wall-deep)}
+.v-pic img{width:100%;height:100%;object-fit:cover;object-position:28% 50%}
+
+footer{margin-top:120px;padding:32px 0 44px;border-top:1px solid var(--line)}
+.foot{display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline;color:var(--dust);font-size:16px}
+.foot .logo{font-size:22px;color:var(--chalk)}
+.foot .credit{margin-left:auto}
+
+@media (max-width:900px){
+  :root{--gut:20px}
+  body{font-size:17px}
+  .bar{height:64px;gap:16px}
+  .bar nav{display:none}
+  .logo{font-size:25px}.logo svg{width:22px;height:26px}
+  .ghost{margin-left:auto;height:44px;padding:0 18px;font-size:16px}
+  .hero-in{min-height:0;justify-content:flex-start;padding-top:20px;padding-bottom:24px}
+  h1{line-height:1.15;padding-top:.3em}
+  .sub{margin-top:30px;font-size:18px}
+  .tape{font-size:14px;padding:4px 8px 3px}
+  .act{margin-top:26px;gap:14px}
+  .btn{height:54px;width:100%}
+  .hours{font-size:16px}
+  section.sec{padding-top:88px}
+  .hero + .sec{padding-top:48px}
+  .sec-head{grid-template-columns:1fr}
+  .sec-head p,.lead{font-size:18px}
+  .days{margin-top:28px;margin-right:calc(var(--gut) * -1);padding-right:var(--gut)}
+  .day{min-width:58px;padding:0 14px}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:18px 0}
+  .time{grid-column:1;font-size:24px}
+  .what{grid-column:1}
+  .book{grid-column:2;grid-row:1/3;height:44px;padding:0 18px}
+  .list{min-height:calc(3 * 122px + 1px)}
+  .pics{grid-template-columns:1fr;margin-top:32px;gap:12px}
+  .pics figure{height:auto;aspect-ratio:4/3;border-radius:16px}
+  .walls{grid-template-columns:1fr 1fr;gap:28px 20px;margin-top:32px}
+  .walls b{font-size:20px}
+  .visit-in{grid-template-columns:1fr;gap:40px}
+  .steps{margin-top:32px;gap:28px}
+  .steps li{grid-template-columns:60px minmax(0,1fr);gap:14px}
+  .steps .hold{left:24px;--sz:46px}
+  .steps li:nth-child(even) .spot{left:12px}
+  .v-pic{aspect-ratio:4/3;border-radius:16px}
+  footer{margin-top:88px}
+  .foot .credit{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .route.go .h,.steps .go .h{animation:show .3s ease-out both}
+  .route.go .bolt,.steps .go .bolt{animation:none}
+  .route.go .tape{animation:show .3s ease-out both}
+  .list .row.in{animation:show .2s ease-out both}
+  .list.out .row{transform:none}
+  .btn:active,.ghost:active,.book:active,.day:active{transform:none}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="jug" viewBox="0 0 100 100"><path d="M12 46C12 26 28 14 50 14S88 26 88 46 72 84 50 86 12 66 12 46Z" style="fill:var(--hold)"/><path d="M88 46c0 20-16 38-38 40 13-8 25-22 28-40Z" style="fill:var(--hold-deep)"/><path d="M24 40c4-12 14-16 26-16s22 4 26 16c-8-5-16-7-26-7s-18 2-26 7Z" fill="#B8285F"/><path d="M21 52c0-7 3-11 8-12-2 6-2 12 0 18-5 0-8-2-8-6Z" style="fill:var(--hold-lit)"/></symbol>
+    <symbol id="crimp" viewBox="0 0 100 100"><path d="M6 52c0-12 16-18 44-18s44 6 44 18-16 16-44 16S6 62 6 52Z" style="fill:var(--hold)"/><path d="M12 46c6-6 20-8 38-8s32 2 38 8c-8-3-22-4-38-4s-30 1-38 4Z" style="fill:var(--hold-lit)"/><path d="M8 56c6 8 22 12 42 12s36-4 42-12c-8 4-24 6-42 6S16 60 8 56Z" style="fill:var(--hold-deep)"/></symbol>
+    <symbol id="sloper" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" style="fill:var(--hold)"/><path d="M84 34c8 22-2 46-26 53-18 5-34-3-42-17 14 10 36 12 50 2 12-8 18-22 18-38Z" style="fill:var(--hold-deep)"/><ellipse cx="35" cy="33" rx="11" ry="6" transform="rotate(-32 35 33)" style="fill:var(--hold-lit)"/></symbol>
+    <symbol id="pinch" viewBox="0 0 100 100"><path d="M40 8c16-2 26 16 26 42s-8 44-22 42c-12-2-14-20-12-42S28 10 40 8Z" style="fill:var(--hold)"/><path d="M58 14c6 10 8 22 8 36 0 26-8 44-22 42 10-6 14-22 14-42V14Z" style="fill:var(--hold-deep)"/><path d="M36 22c2-6 6-8 8-6-4 8-6 24-6 40-3-6-4-22-2-34Z" style="fill:var(--hold-lit)"/></symbol>
+    <symbol id="pocket" viewBox="0 0 100 100"><path d="M50 12c24 0 40 18 38 40S70 88 50 88 12 74 12 52 26 12 50 12Z" style="fill:var(--hold)"/><path d="M88 52c-2 22-18 36-38 36 14-8 26-20 30-36Z" style="fill:var(--hold-deep)"/><ellipse cx="50" cy="44" rx="20" ry="12" fill="#7E1B43"/><path d="M31 46c2-7 10-11 19-11s17 4 19 11c-5-4-11-6-19-6s-14 2-19 6Z" fill="#5C1230"/></symbol>
+    <symbol id="boltsym" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9.4" fill="#9FB0C6"/><circle cx="10" cy="10" r="7.6" fill="#7D90AA"/><path d="M10 5.6l3.8 2.2v4.4L10 14.4l-3.8-2.2V7.8Z" fill="#13202F"/></symbol>
+  </defs>
+</svg>
+
+<header class="wrap bar">
+  <a class="logo" href="#top" aria-label="Pinch, home"><svg viewBox="0 0 52 96" aria-hidden="true"><use href="#pinch" x="-22" y="-2" width="100" height="100"/></svg>Pinch</a>
+  <nav aria-label="Main"><a href="#classes">Classes</a><a href="#wall">The wall</a><a href="#visit">First visit</a></nav>
+  <a class="ghost" href="#visit">Book a first visit</a>
+</header>
+
+<main id="top">
+<section class="hero">
+  <svg class="facets" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><pattern id="tnut" width="44" height="44" patternUnits="userSpaceOnUse"><circle cx="22" cy="22" r="2.3" fill="#1E3352"/></pattern></defs>
+    <rect width="1440" height="900" fill="#2F4B6E"/>
+    <path d="M0 0H600L470 560 0 640Z" fill="#35547A"/>
+    <path d="M600 0H1440V330L940 450 470 560Z" fill="#2A4466"/>
+    <path d="M1080 70 1330 230 1150 440Z" fill="#3A5B84"/>
+    <path d="M1330 230 1440 300V560L1150 440Z" fill="#253D5C"/>
+    <rect width="1440" height="900" fill="url(#tnut)" opacity=".55"/>
+    <path d="M600 0 470 560M0 640 470 560 940 450 1440 330M1080 70 1330 230 1150 440 1080 70M1330 230 1440 300M1150 440 1440 560" fill="none" stroke="#22385A" stroke-width="2"/>
+  </svg>
+  <div class="wrap hero-in">
+    <div class="type">
+      <h1><span>Bouldering</span> <span>in Gowanus.</span></h1>
+      <div class="route" id="route" aria-hidden="true"></div>
+    </div>
+    <p class="sub">Short walls, thick mats, no ropes. New problems every week, and a coach beside you on your first visit.</p>
+    <div class="act"><a class="btn" href="#visit">Book a first visit</a><span class="hours">Open every day, 7 am to 11 pm</span></div>
+  </div>
+</section>
+
+<section class="sec" id="classes">
+  <div class="wrap">
+    <div class="sec-head"><h2>Classes this week</h2><p>Groups of six, coached on the wall. Shoes and chalk are included in every class.</p></div>
+    <div class="days" role="tablist" aria-label="Day of the week" id="days"></div>
+    <ul class="list" id="list" role="tabpanel" aria-label="Classes"></ul>
+  </div>
+</section>
+
+<section class="sec" id="wall">
+  <div class="wrap">
+    <div class="sec-head"><h2>The wall</h2><p class="lead">Four walls up to 4.5 metres, 45 centimetres of mat under every one, and one wall stripped and set again each week.</p></div>
+    <div class="pics">
+      <figure><img src="../../assets/photos/pinch-overhang.jpg" alt="A climber in orange shorts crossing a steep overhang on blue panels" width="1800" height="1201" loading="lazy" decoding="async" style="object-position:62% 45%"></figure>
+      <figure><img src="../../assets/photos/pinch-reach.jpg" alt="A climber in a pink top reaching up the edge of a blue wall" width="1600" height="1068" loading="lazy" decoding="async" style="object-position:72% 40%"></figure>
+    </div>
+    <ul class="walls">
+      <li><b>The cave</b><span>A 45 degree overhang, 4.2 m tall</span><em>New problems on Mondays</em></li>
+      <li><b>The slab</b><span>Leans back from you, 4.5 m tall</span><em>New problems on Wednesdays</em></li>
+      <li><b>The prow</b><span>Two faces meeting at an edge, 4.5 m tall</span><em>New problems on Fridays</em></li>
+      <li><b>The low wall</b><span>For kids and first climbs, 2.5 m tall</span><em>New problems every month</em></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec visit" id="visit">
+  <div class="wrap visit-in">
+    <div>
+      <h2>Your first visit</h2>
+      <ol class="steps" id="steps">
+        <li><div class="spot"><span class="hold" style="--r:-14deg;--by:58%"><span class="h"><svg class="shape"><use href="#jug"/></svg><svg class="bolt" viewBox="0 0 20 20"><use href="#boltsym"/></svg></span></span></div><div><b>Sign the waiver online</b><p>Five minutes on your phone. Under 18, a parent signs with you.</p></div></li>
+        <li><div class="spot"><span class="hold" style="--r:22deg;--by:53%"><span class="h"><svg class="shape"><use href="#crimp"/></svg><svg class="bolt" viewBox="0 0 20 20"><use href="#boltsym"/></svg></span></span></div><div><b>Shoes and chalk at the desk</b><p>Both are included the first time. Wear clothes you can stretch in.</p></div></li>
+        <li><div class="spot"><span class="hold" style="--r:-6deg;--bx:47%;--by:56%"><span class="h"><svg class="shape"><use href="#pinch"/></svg><svg class="bolt" viewBox="0 0 20 20"><use href="#boltsym"/></svg></span></span></div><div><b>Learn to fall, then climb</b><p>A coach shows you how to land on the mats, then walks you up three easy problems.</p></div></li>
+        <li><div class="spot"><span class="hold" style="--r:12deg;--by:56%"><span class="h"><svg class="shape"><use href="#sloper"/></svg><svg class="bolt" viewBox="0 0 20 20"><use href="#boltsym"/></svg></span></span></div><div><b>Stay as long as you like</b><p>Most people climb for about two hours, with long rests on the mats.</p></div></li>
+      </ol>
+      <div class="act"><a class="btn" href="#visit">Book a first visit</a><span>Come any day. A coach is on the wall from 4 pm to 10 pm.</span></div>
+    </div>
+    <figure class="v-pic"><img src="../../assets/photos/pinch-mats.jpg" alt="Four climbers resting and talking on the mats under a blue wall" width="1600" height="1068" loading="lazy" decoding="async"></figure>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#top" aria-label="Pinch, back to top"><svg viewBox="0 0 52 96" aria-hidden="true"><use href="#pinch" x="-22" y="-2" width="100" height="100"/></svg>Pinch</a>
+    <span>Bouldering in Gowanus, Brooklyn. Open every day, 7 am to 11 pm.</span>
+    <span class="credit">Photos by <a href="https://www.pexels.com/photo/7590980/">Pavel Danilyuk</a> on Pexels</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var d = document.documentElement; d.classList.add("js");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var phoneQ = window.matchMedia("(max-width: 900px)");
+
+  // The route on the first screen: one line of holds, from a start under "in" up to a top past the end of "Bouldering".
+  // Every hold sits in a gap clear of the letters and is anchored to one letter, so it keeps its gap at any width.
+  // line: 0 = "Bouldering", 1 = "in Gowanus."; ch: the letter; dx: em right of that letter's left edge;
+  // y: em below that line's baseline (negative = above); size in em of the headline; r: turn; t: when it is bolted on.
+  var ROUTE = {
+    desk: [
+      { kind: "pocket", line: 1, ch: 1, dx: .62, y: .27, size: .28, r: -10, t: .30, tag: ["Start", "r"] },
+      { kind: "crimp", line: 0, ch: 3, dx: .20, y: .24, size: .34, r: -14, t: .50 },
+      { kind: "sloper", line: 0, ch: 5, dx: .42, y: -.72, size: .26, r: 0, t: .70 },
+      { kind: "pinch", line: 0, ch: 9, dx: 0, y: -.86, size: .30, r: 18, t: .90 },
+      { kind: "jug", line: 0, ch: 9, dx: 1.0, y: -1.04, size: .40, r: 6, t: 1.15, tag: ["Top", "r"] }
+    ],
+    phone: [
+      { kind: "pocket", line: 1, ch: 1, dx: .62, y: .34, size: .44, r: -10, t: .30, tag: ["Start", "r"] },
+      { kind: "crimp", line: 0, ch: 4, dx: .10, y: .30, size: .48, r: -14, t: .50 },
+      { kind: "sloper", line: 0, ch: 5, dx: .42, y: -.775, size: .40, r: 0, t: .70 },
+      { kind: "pinch", line: 0, ch: 9, dx: .02, y: -.95, size: .44, r: 18, t: .90 },
+      { kind: "jug", line: 0, ch: 9, dx: 1.07, y: -1.12, size: .56, r: 6, t: 1.15, tag: ["Top", "b"] }
+    ]
+  };
+  var BOLT = { jug: [50, 58], crimp: [50, 53], sloper: [52, 55], pinch: [47, 56], pocket: [50, 72] };
+  var route = document.getElementById("route"), h1 = document.querySelector("h1"), lines = h1.querySelectorAll("span");
+
+  function holdHTML(k) {
+    var b = BOLT[k];
+    return '<span class="h"><svg class="shape"><use href="#' + k + '"/></svg><svg class="bolt" viewBox="0 0 20 20" style="--bx:' + b[0] + '%;--by:' + b[1] + '%"><use href="#boltsym"/></svg></span>';
+  }
+  function charBox(line, i) {
+    var node = lines[line].firstChild, r = document.createRange();
+    r.setStart(node, i); r.setEnd(node, i + 1);
+    return r.getBoundingClientRect();
+  }
+  function place() {
+    var set = phoneQ.matches ? ROUTE.phone : ROUTE.desk;
+    var F = parseFloat(getComputedStyle(h1).fontSize), box = route.getBoundingClientRect();
+    route.textContent = "";
+    set.forEach(function (p) {
+      var c = charBox(p.line, p.ch), x = c.left + p.dx * F, y = c.bottom - .264 * F + p.y * F;
+      var el = document.createElement("span");
+      el.className = "hold";
+      el.style.cssText = "left:" + (x - box.left).toFixed(1) + "px;top:" + (y - box.top).toFixed(1) + "px;--sz:" + (p.size * F).toFixed(1) + "px;--r:" + p.r + "deg;--t:" + p.t + "s";
+      el.innerHTML = holdHTML(p.kind);
+      route.appendChild(el);
+      if (p.tag) {
+        var tp = document.createElement("span"), half = .38 * p.size * F, below = p.tag[1] === "b";
+        tp.className = "tape" + (below ? " below" : "");
+        tp.textContent = p.tag[0];
+        tp.style.cssText = "left:" + (x - box.left + (below ? 0 : half + 8)).toFixed(1) + "px;top:" + (y - box.top + (below ? half + 4 : 0)).toFixed(1) + "px;--t:" + p.t + "s";
+        route.appendChild(tp);
+      }
+    });
+  }
+  // the steps' bolts sit in their own spot inside each hold
+  document.querySelectorAll(".steps .hold").forEach(function (h) {
+    var k = h.querySelector("use").getAttribute("href").slice(1), b = BOLT[k], bolt = h.querySelector(".bolt");
+    bolt.style.setProperty("--bx", b[0] + "%"); bolt.style.setProperty("--by", b[1] + "%");
+  });
+
+  var started = false;
+  function start() {
+    if (started) return; started = true;
+    place();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { route.classList.add("go"); }); });
+  }
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(start);
+  setTimeout(start, 1800);
+  var rz = 0;
+  var lastW = window.innerWidth;
+  window.addEventListener("resize", function () { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rz); rz = setTimeout(function () { if (started) place(); }, 120); });
+
+  // first visit: each step's hold bolts on when the step reaches the reading line
+  var steps = document.querySelectorAll(".steps li");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("go"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -22% 0px" });
+    steps.forEach(function (s) { io.observe(s); });
+  } else steps.forEach(function (s) { s.classList.add("go"); });
+
+  // classes: one week, a tab per day, today first
+  var DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  var NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var WEEK = [
+    [["7:00 am", "Morning climb", "90 min, with a coach"], ["6:30 pm", "Intro to bouldering", "60 min, for new climbers"], ["8:00 pm", "Footwork", "75 min, V1 to V3"]],
+    [["12:15 pm", "Lunch climb", "45 min, everyone"], ["7:00 pm", "Strength for climbers", "60 min, V2 and up"], ["8:30 pm", "Stretch and mobility", "45 min, everyone"]],
+    [["7:00 am", "Morning climb", "90 min, with a coach"], ["6:30 pm", "Intro to bouldering", "60 min, for new climbers"], ["8:00 pm", "Women's climb night", "2 hours, everyone"]],
+    [["12:15 pm", "Lunch climb", "45 min, everyone"], ["6:30 pm", "Intro to bouldering", "60 min, for new climbers"], ["8:00 pm", "Reading a route", "75 min, V2 to V4"]],
+    [["7:00 am", "Morning climb", "90 min, with a coach"], ["6:00 pm", "Teens club", "90 min, ages 13 to 17"], ["8:00 pm", "Friday set", "2 hours, the new problems"]],
+    [["9:00 am", "Kids club", "75 min, ages 8 to 12"], ["11:00 am", "Intro to bouldering", "60 min, for new climbers"], ["2:00 pm", "Footwork", "75 min, V1 to V3"]],
+    [["10:00 am", "Family climb", "2 hours, kids with a grown-up"], ["1:00 pm", "Intro to bouldering", "60 min, for new climbers"], ["5:00 pm", "Stretch and mobility", "45 min, everyone"]]
+  ];
+  var daysEl = document.getElementById("days"), list = document.getElementById("list");
+  var today = (new Date().getDay() + 6) % 7, cur = -1, swapT = 0;
+  DAYS.forEach(function (n, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "day"; b.setAttribute("role", "tab"); b.id = "day" + i;
+    b.setAttribute("aria-label", NAMES[i] + (i === today ? ", today" : ""));
+    b.innerHTML = n + (i === today ? '<span class="today" aria-hidden="true">today</span>' : "");
+    b.addEventListener("click", function () { show(i, true); });
+    b.addEventListener("keydown", function (e) {
+      var k = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (k) { e.preventDefault(); var j = (i + k + 7) % 7; show(j, true); daysEl.children[j].focus(); }
+    });
+    daysEl.appendChild(b);
+  });
+  function rows(i) {
+    return WEEK[i].map(function (c, k) {
+      return '<li class="row in" style="--d:' + (k * .05) + 's"><span class="time">' + c[0] + '</span><span class="what"><b>' + c[1] + '</b><span>' + c[2] + '</span></span><a class="book" href="#visit" aria-label="Book ' + c[1] + ', ' + NAMES[i] + ' ' + c[0] + '">Book</a></li>';
+    }).join("");
+  }
+  function show(i, animate) {
+    if (i === cur) return;
+    [].forEach.call(daysEl.children, function (b, j) { b.setAttribute("aria-selected", j === i ? "true" : "false"); b.tabIndex = j === i ? 0 : -1; });
+    list.setAttribute("aria-labelledby", "day" + i);
+    cur = i;
+    clearTimeout(swapT);
+    if (!animate) { list.innerHTML = rows(i); return; }
+    list.classList.add("out");
+    swapT = setTimeout(function () { list.classList.remove("out"); list.innerHTML = rows(i); }, reduce.matches ? 0 : 120);
+  }
+  show(today, false);
+})();
+</script>
+</body></html>

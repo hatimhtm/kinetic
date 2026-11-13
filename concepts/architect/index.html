@@ -1,0 +1,284 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lampblack, architects of solid houses (concept)</title>
+<meta name="description" content="A two-person architecture practice in Brooklyn that designs brick and timber houses with thick walls. A concept site.">
+<meta name="theme-color" content="#000000">
+<!--
+  Concept site for the Kinetic portfolio. Lampblack is not a real practice.
+  Direction: every building is shown as its plan, walls inked solid black (the poché), photographs living in the rooms.
+  Type: Jost (Google Fonts, OFL). Colour: white paper, lampblack ink, nothing else; the photographs carry the warmth.
+  Photos, free Pexels licence (pexels.com/license):
+    arch-tower.jpg     pexels.com/photo/30163090  by julianemonarifotografia (juliane Monari)
+    arch-door.jpg      pexels.com/photo/26735733  by Jan van der Wolf
+    arch-gables.jpg    pexels.com/photo/14101336  by Jan van der Wolf
+    arch-townhouse.jpg pexels.com/photo/19516616  by Jan van der Wolf
+    arch-concrete.jpg  pexels.com/photo/18927540  by Félix Gutiérrez
+    arch-sunroom.jpg   pexels.com/photo/33825710  by Mohamed B.
+    arch-grid.jpg      pexels.com/photo/2254182   by athena (Athena Sandrini)
+    arch-stair.jpg     pexels.com/photo/18891789  by Filipp Romanovski
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#000000; --quiet:#5C5C5C; --line:#000;
+  --wall:20px; --part:12px; --gut:48px;
+  --draw:cubic-bezier(.65,0,.35,1); --settle:cubic-bezier(.2,0,0,1); --out:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Jost",system-ui,sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:18px;line-height:1.5;overflow-x:hidden}
+::selection{background:#000;color:#fff}
+a{color:inherit}
+:focus-visible{outline:3px solid #000;outline-offset:3px}
+img{display:block;max-width:100%}
+p,li{text-wrap:pretty}
+.concept{background:#000;color:#fff;font-size:14px;line-height:1.4;text-align:center;padding:8px 16px}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:32px;height:76px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:600;font-size:23px;letter-spacing:-.01em;text-decoration:none}
+.logo svg{width:26px;height:26px;flex:none}
+.bar nav{margin-left:auto;display:flex;gap:30px;font-size:17px;font-weight:500}
+.bar nav a{text-decoration:none}
+.bar nav a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;height:52px;padding:0 26px;background:#000;color:#fff;font-weight:500;font-size:17px;text-decoration:none;transition:background-color .16s ease,transform .12s var(--out)}
+.btn:hover{background:#262626}
+.btn:active{transform:scale(.97)}
+.btn.line{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.line:hover{background:#F0F0F0}
+.link{font-weight:500;font-size:17px;text-underline-offset:6px;text-decoration-thickness:2px}
+
+/* the plan: walls are the black ground showing between rooms */
+.plan{position:relative;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(6,1fr);gap:var(--part);padding:var(--wall);background:var(--ink);height:clamp(600px,calc(100svh - 150px),780px);margin-bottom:96px}
+.room{position:relative;background:var(--paper);min-width:0;min-height:0}
+.room>img{width:100%;height:100%;object-fit:cover}
+.hall{grid-area:1/1/5/6;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 44px 44px}
+.r-light{grid-area:1/6/4/10}
+.r-tower{grid-area:1/10/7/13}
+.r-door{grid-area:4/6/7/10}
+.r-stair{grid-area:5/1/7/3;background:repeating-linear-gradient(90deg,var(--paper) 0 16px,var(--ink) 16px 18px)}
+.r-stair::after{content:"";position:absolute;left:0;right:0;top:46%;height:2px;background:var(--ink);transform:rotate(-14deg);box-shadow:0 0 0 5px var(--paper)}
+.r-note{grid-area:5/3/7/6;display:flex;align-items:flex-start;padding:24px 28px}
+.r-note p{font-size:16px;line-height:1.45;color:var(--quiet);max-width:22em}
+h1{font-weight:500;font-size:clamp(40px,4.4vw,66px);line-height:1.04;letter-spacing:-.025em;text-wrap:balance;max-width:11em}
+.hall .sub{margin-top:20px;font-size:19px;line-height:1.5;color:var(--quiet);max-width:27em}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:28px}
+/* openings and windows, drawn as gaps in the walls */
+.gap{position:absolute;background:var(--paper)}
+.win{position:absolute;background:var(--paper)}
+.win::after{content:"";position:absolute;background:var(--ink)}
+.win.h::after{left:0;right:0;top:50%;height:2px;margin-top:-1px}
+.win.v::after{top:0;bottom:0;left:50%;width:2px;margin-left:-1px}
+.swing{position:absolute;width:64px;height:64px;overflow:visible;pointer-events:none}
+.swing path{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:180;stroke-dashoffset:0}
+/* desktop placements */
+.g-entry{right:28px;bottom:calc(-1 * var(--wall));width:64px;height:var(--wall)}
+.s-entry{right:28px;bottom:0}
+.g-hall{right:calc(-1 * var(--part));top:14%;width:var(--part);height:64px}
+.s-hall{right:0;top:14%;transform:scaleX(-1)}
+.g-note{left:calc(-1 * var(--part));bottom:22px;width:var(--part);height:56px}
+.g-door{right:calc(-1 * var(--part));top:30%;width:var(--part);height:96px}
+.w-light{top:calc(-1 * var(--wall));left:18%;width:52%;height:var(--wall)}
+.w-tower{top:calc(-1 * var(--wall));left:20%;width:60%;height:var(--wall)}
+.w-tower2{right:calc(-1 * var(--wall));top:38%;height:30%;width:var(--wall)}
+.w-door{bottom:calc(-1 * var(--wall));left:16%;width:44%;height:var(--wall)}
+
+/* sections */
+section{scroll-margin-top:24px}
+.head{margin-bottom:56px}
+h2{font-weight:500;font-size:clamp(34px,3.4vw,52px);line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.head p{margin-top:12px;font-size:18px;color:var(--quiet);max-width:28em}
+
+.projects{list-style:none;margin-bottom:96px}
+.proj{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1.5fr);gap:48px;align-items:start;padding:0 0 72px}
+.proj .glyph{width:100%;height:auto}
+.proj .glyph rect.w,.proj .glyph path.w{fill:var(--ink)}
+.proj h3{font-weight:500;font-size:30px;line-height:1.15;letter-spacing:-.015em}
+.proj .where{margin-top:6px;font-size:17px;color:var(--quiet)}
+.proj .what{margin-top:18px;font-size:18px;line-height:1.55;max-width:26em}
+.facts{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:22px;font-size:16px;color:var(--quiet);font-variant-numeric:tabular-nums}
+.facts b{display:block;font-weight:500;font-size:20px;color:var(--ink)}
+.proj figure{position:relative;overflow:hidden;aspect-ratio:3/2;background:#eee}
+.proj figure img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--settle)}
+.proj:hover figure img{transform:scale(1.03)}
+
+.practice{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px;margin-bottom:128px}
+.practice .big{grid-column:1/10;font-weight:500;font-size:clamp(28px,2.7vw,40px);line-height:1.25;letter-spacing:-.015em;text-wrap:pretty}
+.practice .big span{color:var(--quiet)}
+.partners{grid-column:1/13;display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-top:64px}
+.partners h3{font-weight:500;font-size:22px}
+.partners p{margin-top:8px;font-size:17px;line-height:1.55;color:var(--quiet);max-width:24em}
+.stair-photo{grid-column:1/13;margin-top:64px;aspect-ratio:21/8;overflow:hidden}
+.stair-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+
+.contact{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;padding:56px 0 64px;border-top:var(--wall) solid var(--ink)}
+.contact h2{max-width:14em}
+.contact p{margin-top:16px;font-size:18px;color:var(--quiet);max-width:30em}
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;padding:28px 0 40px;font-size:15px;color:var(--quiet);border-top:2px solid var(--ink)}
+
+/* the inking: walls draw left to right, then light comes into the rooms */
+.js .plan{clip-path:inset(0 100% 0 0)}
+.js .plan .room>img{opacity:0;transform:scale(1.08);filter:blur(8px)}
+.js .plan .hall>*{opacity:0;transform:translateY(18px)}
+.js .plan .swing path{stroke-dashoffset:180}
+.js .glyph{clip-path:inset(0 100% 0 0)}
+.js.inked .plan{clip-path:inset(0 0 0 0);transition:clip-path 1s var(--draw)}
+.js.inked .plan .room>img{opacity:1;transform:none;filter:none;transition:opacity .7s ease,transform 1.1s var(--settle),filter .8s var(--settle)}
+.js.inked .plan .r-light>img{transition-delay:.85s}.js.inked .plan .r-tower>img{transition-delay:1s}.js.inked .plan .r-door>img{transition-delay:1.15s}
+.js.inked .plan .hall>*{opacity:1;transform:none;transition:opacity .5s ease,transform .8s var(--settle)}
+.js.inked .plan .hall>h1{transition-delay:.7s}.js.inked .plan .hall>.sub{transition-delay:.84s}.js.inked .plan .hall>.acts{transition-delay:.96s}
+.js.inked .plan .swing path{stroke-dashoffset:0;transition:stroke-dashoffset .6s var(--settle) .9s}
+.glyph.on{clip-path:inset(0 0 0 0);transition:clip-path .9s var(--draw)}
+
+@media (hover:hover) and (pointer:fine){
+  .plan .room>img{transition:transform .5s var(--settle)}
+  .js.inked .plan .room:hover>img{transform:scale(1.025)}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .plan,.js .glyph{clip-path:none}
+  .js .plan .room>img,.js .plan .hall>*{transform:none;filter:none}
+  .js.inked .plan .room>img,.js.inked .plan .hall>*{transition:opacity .4s ease}
+  .js .plan .swing path{stroke-dashoffset:0}
+  .proj figure img,.proj:hover figure img{transition:none;transform:none}
+}
+
+/* phone: the house turns with the screen */
+@media (max-width:860px){
+  :root{--wall:14px;--part:9px;--gut:16px}
+  body{font-size:17px}
+  .bar{height:64px}.bar nav{display:none}.bar .btn{margin-left:auto;height:44px;padding:0 18px;font-size:16px}
+  .logo{font-size:21px}.logo svg{width:22px;height:22px}
+  .plan{grid-template-columns:repeat(6,1fr);grid-template-rows:auto 172px 196px 128px;height:auto;margin-bottom:72px}
+  .hall{grid-area:1/1/2/7;padding:28px 22px 30px}
+  h1{font-size:40px;line-height:1.06}
+  .hall .sub{font-size:17px;margin-top:14px}
+  .acts{margin-top:22px}
+  .r-light{grid-area:2/1/3/4}.r-tower{grid-area:2/4/4/7}.r-door{grid-area:3/1/4/4}.r-stair{grid-area:4/1/5/3}.r-note{grid-area:4/3/5/7;padding:14px 16px}
+  .r-note p{font-size:14px}
+  .g-entry{right:18px;width:52px}
+  .s-entry{display:none}
+  .g-hall{right:auto;left:18%;top:auto;bottom:calc(-1 * var(--part));width:56px;height:var(--part)}
+  .s-hall{display:none}
+  .g-note{left:calc(-1 * var(--part));bottom:16px;width:var(--part);height:44px}
+  .g-door{top:40%;height:72px}
+  .w-light{top:auto;left:calc(-1 * var(--wall));width:var(--wall);top:24%;height:52%}
+  .win.w-light::after,.win.w-door::after{left:50%;right:auto;top:0;bottom:0;height:auto;width:2px;margin:0 0 0 -1px}
+  .w-door{bottom:auto;left:calc(-1 * var(--wall));top:20%;width:var(--wall);height:50%}
+  .w-tower{display:none}
+  .js .plan{clip-path:inset(0 0 100% 0)}
+  .head{margin-bottom:32px}.head p{font-size:17px}
+  h2{font-size:34px}
+  .projects{margin-bottom:96px}
+  .proj{grid-template-columns:96px minmax(0,1fr);gap:20px 20px;padding:0 0 48px}
+  .proj figure{grid-column:1/3;grid-row:1}
+  .proj .glyph{grid-column:1;grid-row:2}
+  .proj .txt{grid-column:2;grid-row:2}
+  .proj h3{font-size:24px}.proj .what{font-size:17px;margin-top:12px}
+  .facts{gap:8px 20px}.facts b{font-size:18px}
+  .practice{display:block;margin-bottom:96px}
+  .practice .big{font-size:26px}
+  .partners{grid-template-columns:1fr;gap:28px;margin-top:40px}
+  .stair-photo{margin-top:40px;aspect-ratio:4/3}
+  .contact{grid-template-columns:1fr;padding:40px 0 48px}
+  .contact .btn{justify-self:start}
+  footer{font-size:14px}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+<div class="wrap">
+<header class="bar">
+  <a class="logo" href="#" aria-label="Lampblack, home"><svg viewBox="0 0 26 26" aria-hidden="true"><path fill="#000" fill-rule="evenodd" d="M0 0h26v26H0zM5 5v16h16V13h-5V5z"/></svg>Lampblack</a>
+  <nav aria-label="Main"><a href="#projects">Projects</a><a href="#practice">Practice</a><a href="#contact">Contact</a></nav>
+  <a class="btn line" href="#contact">Start a project</a>
+</header>
+
+<main>
+<div class="plan" id="plan" aria-label="Floor plan of a house, used as the first screen">
+  <div class="room hall">
+    <h1>Thick walls, deep&nbsp;windows.</h1>
+    <p class="sub">Lampblack is a two-person architecture practice in Brooklyn. We design brick and timber houses built to last a century.</p>
+    <div class="acts"><a class="btn" href="#contact">Start a project</a><a class="link" href="#projects">See the projects</a></div>
+    <span class="gap g-hall"></span>
+    <svg class="swing s-hall" viewBox="0 0 64 64" aria-hidden="true"><path d="M0 0H64M64 0A64 64 0 0 1 0 64"/></svg>
+  </div>
+  <div class="room r-light"><img src="../../assets/photos/arch-concrete.jpg" alt="Daylight from a skylight falling down a concrete wall" width="1400" height="1867"><span class="win h w-light"></span></div>
+  <div class="room r-tower"><img src="../../assets/photos/arch-grid.jpg" alt="A brown brick wall with a deep window divided into small squares" width="1400" height="2493" style="object-position:50% 50%"><span class="win h w-tower"></span><span class="win v w-tower2"></span></div>
+  <div class="room r-door"><img src="../../assets/photos/arch-sunroom.jpg" alt="Afternoon sun falling through a window onto a pale wall" width="1400" height="1750" style="object-position:50% 62%"><span class="gap g-door"></span><span class="win h w-door"></span></div>
+  <div class="room r-stair" aria-hidden="true"></div>
+  <div class="room r-note"><p>Eleven buildings since 2016, from a garden studio in Beacon to a village library.</p><span class="gap g-note"></span><span class="gap g-entry"></span><svg class="swing s-entry" viewBox="0 0 64 64" aria-hidden="true"><path d="M64 64V0M64 0A64 64 0 0 0 0 64"/></svg></div>
+</div>
+
+<section id="projects" aria-labelledby="h-projects">
+  <div class="head"><h2 id="h-projects">Projects</h2><p>Each one shown as we drew it, at the same scale, walls in black.</p></div>
+  <ol class="projects">
+    <li class="proj">
+      <svg class="glyph" viewBox="0 0 120 200" role="img" aria-label="Plan of the Tower house: three rooms stacked on a narrow lot"><path class="w" fill-rule="evenodd" d="M30 10h60v180H30zM40 20v62h40V20zM40 92v40h40V92zM40 142v38h40v-38z"/><rect x="58" y="82" width="14" height="10" fill="#fff"/><rect x="44" y="132" width="14" height="10" fill="#fff"/><rect x="50" y="186" width="20" height="4" fill="#fff"/></svg>
+      <div class="txt"><h3>Tower house</h3><p class="where">Hudson, New York, 2024</p>
+        <p class="what">Three rooms stacked on a lot sixteen feet wide. The walls are fourteen inches of yellow brick, so the house stays cool in August without air conditioning.</p>
+        <div class="facts"><span><b>1,150 sq ft</b>floor area</span><span><b>3</b>storeys</span><span><b>14 in</b>walls</span></div></div>
+      <figure><img src="../../assets/photos/arch-tower.jpg" alt="The Tower house: yellow brick, one small window, a door at its foot" width="1600" height="2400" loading="lazy" style="object-position:50% 46%"></figure>
+    </li>
+    <li class="proj">
+      <svg class="glyph" viewBox="0 0 120 200" role="img" aria-label="Plan of the Gable row: four houses side by side"><path class="w" fill-rule="evenodd" d="M4 60h112v80H4zM12 68v64h18V68zM38 68v64h18V68zM64 68v64h18V68zM90 68v64h18V68z"/><rect x="16" y="132" width="10" height="8" fill="#fff"/><rect x="42" y="132" width="10" height="8" fill="#fff"/><rect x="68" y="132" width="10" height="8" fill="#fff"/><rect x="94" y="132" width="10" height="8" fill="#fff"/></svg>
+      <div class="txt"><h3>Gable row</h3><p class="where">Kingston, New York, 2023</p>
+        <p class="what">Six family houses under one roof line, each with its own gable, front door and garden. Built for a land trust, sold below market.</p>
+        <div class="facts"><span><b>6</b>houses</span><span><b>980 sq ft</b>each</span><span><b>2</b>storeys</span></div></div>
+      <figure><img src="../../assets/photos/arch-gables.jpg" alt="A row of brick gables against a blue sky" width="1600" height="1067" loading="lazy"></figure>
+    </li>
+    <li class="proj">
+      <svg class="glyph" viewBox="0 0 120 200" role="img" aria-label="Plan of the Round door house: a courtyard behind a solid street wall"><path class="w" fill-rule="evenodd" d="M14 30h92v140H14zM24 40v50h72V40zM24 100v60h30v-60zM64 100v60h32v-60z"/><rect x="50" y="166" width="20" height="4" fill="#fff"/><rect x="34" y="90" width="16" height="10" fill="#fff"/><rect x="72" y="90" width="16" height="10" fill="#fff"/></svg>
+      <div class="txt"><h3>Round door house</h3><p class="where">Red Hook, Brooklyn, 2022</p>
+        <p class="what">On a loud street, the front door is the only opening. Behind it the rooms turn around a courtyard, and every window looks onto the garden.</p>
+        <div class="facts"><span><b>1,600 sq ft</b>floor area</span><span><b>1</b>opening on the street</span></div></div>
+      <figure><img src="../../assets/photos/arch-door.jpg" alt="A front door with a round panel, set deep in a dark brick wall" width="1400" height="933" loading="lazy"></figure>
+    </li>
+    <li class="proj">
+      <svg class="glyph" viewBox="0 0 120 200" role="img" aria-label="Plan of the Stepped house: a wide house in two halves"><path class="w" fill-rule="evenodd" d="M6 44h108v112H6zM16 54v92h42V54zM68 54v40h36V54zM68 104v42h36v-42z"/><rect x="58" y="70" width="10" height="16" fill="#fff"/><rect x="58" y="116" width="10" height="16" fill="#fff"/><rect x="28" y="152" width="18" height="4" fill="#fff"/></svg>
+      <div class="txt"><h3>Stepped house</h3><p class="where">Croton-on-Hudson, New York, 2021</p>
+        <p class="what">A brick house whose gable steps down to meet its lower neighbours, with a hedge in place of a fence along the street.</p>
+        <div class="facts"><span><b>2,100 sq ft</b>floor area</span><span><b>2</b>storeys</span></div></div>
+      <figure><img src="../../assets/photos/arch-townhouse.jpg" alt="A brick house with a stepped gable behind a low hedge" width="1800" height="1200" loading="lazy" style="object-position:50% 40%"></figure>
+    </li>
+  </ol>
+</section>
+
+<section id="practice" class="practice" aria-labelledby="h-practice">
+  <h2 id="h-practice" class="big">We start every drawing with the walls. <span>A thick wall keeps the heat in during winter and out in summer, stops the noise of the street, and still looks right in a hundred years. Then we cut the openings, each one placed for a view, a patch of sun or a way in.</span></h2>
+  <div class="partners">
+    <div><h3>Ines Okafor</h3><p>Architect, licensed in New York. Before Lampblack, nine years building schools in Lagos and London.</p></div>
+    <div><h3>Tom Lindqvist</h3><p>Architect and joiner. Draws every stair and window by hand before it goes to the builder.</p></div>
+    <div><h3>How we work</h3><p>We visit the site with you, draw the plan together, and stay on the job until the last brick is laid.</p></div>
+  </div>
+  <figure class="stair-photo"><img src="../../assets/photos/arch-stair.jpg" alt="A timber stair lit by sun through a skylight" width="1400" height="2100" loading="lazy"></figure>
+</section>
+
+<section id="contact" class="contact" aria-labelledby="h-contact">
+  <div><h2 id="h-contact">Tell us about your site.</h2><p>Send us the address and a few photos. We answer within a week, and the first visit is on us.</p></div>
+  <a class="btn" href="#">Write to us</a>
+</section>
+</main>
+
+<footer>
+  <span>Lampblack, 68 Jay Street, Brooklyn</span>
+  <span>Photos on Pexels: <a href="https://www.pexels.com/photo/30163090/">juliane Monari</a>, <a href="https://www.pexels.com/photo/26735733/">Jan van der Wolf</a>, <a href="https://www.pexels.com/photo/18927540/">Félix Gutiérrez</a>, <a href="https://www.pexels.com/photo/18891789/">Filipp Romanovski</a>, <a href="https://www.pexels.com/photo/33825710/">Mohamed B.</a>, <a href="https://www.pexels.com/photo/2254182/">Athena Sandrini</a></span>
+</footer>
+</div>
+<script>
+(function(){
+  var d=document.documentElement; d.classList.add("js");
+  // ink the plan once the page has its fonts and first photo, so nothing pops in half-drawn
+  var go=function(){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ d.classList.add("inked"); }); }); };
+  var first=document.querySelector(".r-light img");
+  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(function(r){ if(first.complete) r(); else { first.onload=r; first.onerror=r; } })]).then(go);
+  setTimeout(function(){ d.classList.add("inked"); },1600);
+  // each project's plan inks itself when it reaches the reading line
+  var gl=document.querySelectorAll(".glyph");
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target); } }); },{rootMargin:"0px 0px -20% 0px"});
+    gl.forEach(function(g){ io.observe(g); });
+  } else gl.forEach(function(g){ g.classList.add("on"); });
+})();
+</script>
+</body></html>

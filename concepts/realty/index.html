@@ -1,0 +1,286 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stoop, Brooklyn real estate (concept)</title>
+<meta name="description" content="A Brooklyn real-estate agency selling brownstones and rowhouses in Park Slope, Clinton Hill, Fort Greene and Bed-Stuy. A concept site.">
+<meta name="theme-color" content="#8A4330">
+<!--
+  Concept site for the Kinetic portfolio. Stoop is not a real agency.
+  Direction: the Brooklyn block. Bluestone sidewalk for the ground, slate ink, brownstone brown for the one thing you act on.
+  Device: the stoop. Every photograph has three steps cut from its corner, and arrives by climbing them: a stepped edge
+  sweeps across it, bottom step first. The three ways to sell are drawn as three steps.
+  Type: Libre Franklin (Google Fonts, OFL), from Franklin Gothic (1902), the American gothic of New York's newspapers,
+  shop fronts and real-estate signs.
+  Photos, free Pexels licence (pexels.com/license):
+    stoop-hero.jpg pexels.com/photo/30726437 Sasha Zilov     stoop-l1.jpg pexels.com/photo/36276097 Ben Prater
+    stoop-l2.jpg   pexels.com/photo/30726436 Sasha Zilov     stoop-l3.jpg pexels.com/photo/38103469 Yura Forrat
+    stoop-l4.jpg   pexels.com/photo/404173   Brandon Nickerson stoop-l5.jpg pexels.com/photo/29419908 Paulo Veloso
+    stoop-n1.jpg   pexels.com/photo/31661836 Ramaz Bluashvili     stoop-n2.jpg pexels.com/photo/19928114 Yura Forrat
+    stoop-n3.jpg   pexels.com/photo/6408235  Centosfotos     stoop-n4.jpg pexels.com/photo/37785063 Brett A
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#E4E9EC;    /* bluestone sidewalk */
+  --slab:#CDD5DA;
+  --ink:#18232B;      /* slate */
+  --quiet:#46545E;
+  --brown:#8A4330;    /* brownstone */
+  --white:#FFFFFF;
+  --gut:48px; --s:28px;
+  --sweep:cubic-bezier(.65,0,.35,1); --out:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Libre Franklin",system-ui,sans-serif;background:var(--stone);color:var(--ink);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--brown);color:#fff}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brown);outline-offset:3px}
+img{display:block;max-width:100%}
+p{text-wrap:pretty}
+.nb{white-space:nowrap}
+.concept{background:var(--ink);color:#fff;font-size:14px;line-height:1.4;text-align:center;padding:8px 16px}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:32px;height:76px}
+.logo{display:flex;align-items:flex-end;gap:10px;font-weight:800;font-size:26px;letter-spacing:-.03em;line-height:1;text-decoration:none}
+.logo svg{width:26px;height:26px;flex:none}
+.bar nav{margin-left:auto;display:flex;gap:30px;font-size:17px;font-weight:600}
+.bar nav a{text-decoration:none}
+.bar nav a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;height:54px;padding:0 28px;border-radius:4px;background:var(--brown);color:#fff;font-weight:800;font-size:17px;text-decoration:none;transition:background-color .16s ease,transform .12s var(--out)}
+.btn:hover{background:#753826}
+.btn:active{transform:scale(.97)}
+.btn.line{height:46px;padding:0 20px;background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink);font-weight:600}
+.btn.line:hover{background:var(--slab)}
+
+/* the stoop: three steps cut from a photo's lower right corner */
+.stoop{position:relative;overflow:hidden;background:var(--slab)}
+.stoop img{width:100%;height:100%;object-fit:cover}
+.stoop::after{content:"";position:absolute;right:-1px;bottom:-1px;width:calc(3 * var(--s) + 1px);height:calc(3 * var(--s) + 1px);background:var(--stone);
+  clip-path:polygon(100% 0,100% 100%,0 100%,0 66.67%,33.33% 66.67%,33.33% 33.33%,66.67% 33.33%,66.67% 0)}
+
+/* first screen: the headline across the width, the block right under it */
+.hero{padding:28px 0 0}
+h1{font-weight:800;font-size:clamp(46px,6.4vw,104px);line-height:.98;letter-spacing:-.035em;text-wrap:balance;max-width:13.5em}
+.intro{display:flex;flex-wrap:wrap;align-items:center;gap:20px 40px;margin-top:28px}
+.intro .sub{font-size:20px;line-height:1.5;color:var(--quiet);max-width:31em;flex:1 1 420px}
+.intro .acts{display:flex;align-items:center;gap:24px}
+.intro small{font-size:16px;font-weight:600;color:var(--brown)}
+.hero .stoop{margin-top:40px;height:clamp(320px,44svh,520px);--s:40px}
+.hero .stoop img{object-position:50% 58%}
+
+/* listings */
+section{scroll-margin-top:16px}
+.listings{padding:96px 0 104px}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:36px}
+h2{font-weight:800;font-size:clamp(36px,3.6vw,56px);line-height:1.02;letter-spacing:-.03em}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{height:44px;padding:0 18px;border:0;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 2px var(--slab);color:var(--ink);font:600 16px "Libre Franklin",sans-serif;cursor:pointer;transition:background-color .16s ease,box-shadow .16s ease,color .16s ease}
+.chip:hover{box-shadow:inset 0 0 0 2px var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 32px}
+.home{display:flex;flex-direction:column;gap:16px;min-width:0}
+.home .stoop{aspect-ratio:4/5;--s:16px}
+.grid.all .home.feature{grid-column:span 2;grid-row:span 2}
+.grid.all .home.feature .stoop{aspect-ratio:auto;flex:1;min-height:420px;--s:28px}
+.home .price{font-weight:800;font-size:26px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.feature .price{font-size:34px}
+.home .addr{margin-top:6px;font-size:18px;font-weight:600}
+.home .facts{margin-top:2px;font-size:16px;color:var(--quiet)}
+.home .open{margin-top:8px;font-size:16px;font-weight:600;color:var(--brown)}
+.home a{text-decoration:none}
+@media (hover:hover) and (pointer:fine){
+  .home .stoop img{transition:transform .6s cubic-bezier(.2,0,0,1)}
+  .home:hover .stoop img{transform:scale(1.03)}
+}
+
+/* neighbourhoods: names you hover, one photo that answers */
+.hoods{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start;padding:0 0 112px}
+.hoods ul{list-style:none;margin-top:28px}
+.hood{display:block;width:100%;text-align:left;border:0;background:none;color:var(--ink);font-family:inherit;cursor:pointer;padding:22px 0;box-shadow:0 2px 0 var(--slab)}
+.hood b{display:block;white-space:nowrap;font-weight:800;font-size:clamp(30px,3vw,44px);line-height:1.05;letter-spacing:-.03em;transition:color .16s ease}
+.hood span{display:block;margin-top:6px;font-size:17px;color:var(--quiet)}
+.hood[aria-current="true"] b{color:var(--brown)}
+.hood img{display:none}
+.view{position:sticky;top:24px;aspect-ratio:4/5;--s:32px}
+.view img{position:absolute;inset:0;opacity:0;transition:opacity .45s ease,filter .45s ease;filter:blur(3px)}
+.view img.on{opacity:1;filter:none}
+
+/* selling, drawn as three steps */
+.sell{padding:0 0 112px}
+.sell .lead{margin-top:14px;font-size:20px;color:var(--quiet);max-width:30em}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;margin-top:44px}
+.steps li{background:var(--brown);color:#fff;padding:28px 28px 32px;display:flex;flex-direction:column;justify-content:flex-end}
+.steps li:nth-child(1){min-height:200px}.steps li:nth-child(2){min-height:300px;background:#7A3A29}.steps li:nth-child(3){min-height:400px;background:#6B3223}
+.steps .n{font-weight:800;font-size:20px;opacity:.75}
+.steps h3{margin-top:6px;font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-.02em}
+.steps p{margin-top:10px;font-size:17px;line-height:1.5;color:#F2E2DC;max-width:22em}
+.sell .btn{margin-top:36px}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;padding:28px 0 40px;font-size:15px;color:var(--quiet);box-shadow:0 -2px 0 var(--slab)}
+
+/* arrival: each photo climbs its stoop, a stepped edge crossing it bottom step first */
+@keyframes climb{
+  0%{clip-path:polygon(0 0,0 0,0 33.4%,0 33.4%,0 66.7%,0 66.7%,0 100%,0 100%)}
+  45%{clip-path:polygon(0 0,18% 0,18% 33.4%,38% 33.4%,38% 66.7%,60% 66.7%,60% 100%,0 100%)}
+  100%{clip-path:polygon(0 0,100% 0,100% 33.4%,100% 33.4%,100% 66.7%,100% 66.7%,100% 100%,0 100%)}
+}
+.js .reveal img{clip-path:polygon(0 0,0 0,0 33.4%,0 33.4%,0 66.7%,0 66.7%,0 100%,0 100%)}
+.js .reveal.go img{animation:climb 1.15s var(--sweep) both}
+.js .hero h1,.js .intro{opacity:0;transform:translateY(22px)}
+.js.ready .hero h1,.js.ready .intro{opacity:1;transform:none;transition:opacity .5s ease,transform .9s var(--out)}
+.js.ready .intro{transition-delay:.12s}
+@media (prefers-reduced-motion:reduce){
+  .js .reveal img,.js .reveal.go img{clip-path:none;animation:none}
+  .js .hero h1,.js .intro{transform:none}
+  .js.ready .hero h1,.js.ready .intro{transition:opacity .4s ease}
+  .view img{transition:opacity .3s ease;filter:none}
+}
+
+@media (max-width:860px){
+  :root{--gut:16px}
+  body{font-size:17px}
+  .bar{height:64px}.bar nav{display:none}.bar .btn.line{margin-left:auto;height:44px;padding:0 16px;font-size:16px}
+  .logo{font-size:24px}.logo svg{width:22px;height:22px}
+  .hero{padding-top:12px}
+  h1{font-size:46px;line-height:1}
+  .intro{margin-top:18px;gap:18px}.intro .sub{font-size:17px;flex-basis:auto}
+  .intro .acts{flex-wrap:wrap;gap:14px 20px}
+  .hero .stoop{margin-top:26px;height:auto;aspect-ratio:4/3;--s:24px}
+  .listings{padding:72px 0 80px}
+  .head{margin-bottom:24px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(-1 * var(--gut));padding:0 var(--gut) 4px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 14px}
+  .grid.all .home.feature{grid-column:1/-1;grid-row:auto}
+  .grid.all .home.feature .stoop{flex:none;min-height:0;aspect-ratio:4/5;--s:22px}
+  .home .price{font-size:20px}.feature .price{font-size:28px}
+  .home .addr{font-size:16px}.home .facts,.home .open{font-size:15px}
+  .hoods{grid-template-columns:1fr;gap:0;padding-bottom:80px}
+  .view{display:none}
+  .hood{display:grid;grid-template-columns:96px 1fr;gap:4px 16px;align-items:center;padding:16px 0}
+  .hood img{display:block;grid-row:1/3;width:96px;height:96px;object-fit:cover}
+  .hood b{font-size:26px}.hood span{margin-top:0;font-size:15px}
+  .sell{padding-bottom:80px}
+  .sell .lead{font-size:17px}
+  .steps{grid-template-columns:1fr;justify-items:end;margin-top:28px}
+  .steps li{min-height:0!important;padding:22px 20px 24px}
+  .steps li:nth-child(1){width:72%}.steps li:nth-child(2){width:86%}.steps li:nth-child(3){width:100%}
+  .steps h3{font-size:22px}.steps p{font-size:16px}
+  footer{font-size:14px}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+<div class="wrap">
+<header class="bar">
+  <a class="logo" href="#" aria-label="Stoop, home"><svg viewBox="0 0 26 26" aria-hidden="true"><path fill="#8A4330" d="M0 26V18h8v-8h8V2h10v24z"/></svg>Stoop</a>
+  <nav aria-label="Main"><a href="#homes">Homes for sale</a><a href="#hoods">Neighbourhoods</a><a href="#sell">Sell with us</a></nav>
+  <a class="btn line" href="#sell">Talk to an agent</a>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h-hero">
+  <h1 id="h-hero">Brownstones in Brooklyn, sold by&nbsp;neighbours.</h1>
+  <div class="intro">
+    <p class="sub">We sell houses in Park&nbsp;Slope, Clinton&nbsp;Hill, Fort&nbsp;Greene and <span class="nb">Bed-Stuy</span>, and we live on the blocks we sell.</p>
+    <div class="acts"><a class="btn" href="#homes">See homes for sale</a><small>Open houses every Sunday</small></div>
+  </div>
+  <figure class="stoop reveal"><img src="../../assets/photos/stoop-hero.jpg" alt="Two pink brownstones with high stoops on a Brooklyn street in early spring" width="2200" height="1468"></figure>
+</section>
+
+<section class="listings" id="homes" aria-labelledby="h-homes">
+  <div class="head"><h2 id="h-homes">Homes for sale</h2>
+    <div class="chips" role="group" aria-label="Filter by neighbourhood">
+      <button class="chip" type="button" aria-pressed="true" data-f="all">All</button><button class="chip" type="button" aria-pressed="false" data-f="park-slope">Park Slope</button><button class="chip" type="button" aria-pressed="false" data-f="clinton-hill">Clinton Hill</button><button class="chip" type="button" aria-pressed="false" data-f="fort-greene">Fort Greene</button><button class="chip" type="button" aria-pressed="false" data-f="bed-stuy">Bed-Stuy</button>
+    </div></div>
+  <div class="grid all" id="grid">
+    <article class="home feature" data-h="fort-greene"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-l1.jpg" alt="A brownstone with a wide stoop and a carved wooden door" width="1400" height="1867" loading="lazy" style="object-position:50% 70%"></figure></a>
+      <div><p class="price">$3,450,000</p><p class="addr">Carlton Avenue, Fort&nbsp;Greene</p><p class="facts">Four storeys, 5&nbsp;beds, 3.5&nbsp;baths, 3,600&nbsp;sq&nbsp;ft</p><p class="open">Open Sunday, 12&nbsp;to&nbsp;2</p></div></article>
+    <article class="home" data-h="bed-stuy"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-l2.jpg" alt="A wooden front door at the top of a stoop lined with pumpkins" width="1400" height="2129" loading="lazy" style="object-position:50% 40%"></figure></a>
+      <div><p class="price">$2,150,000</p><p class="addr">Halsey Street, <span class="nb">Bed-Stuy</span></p><p class="facts">3&nbsp;beds, 2&nbsp;baths, 2,400&nbsp;sq&nbsp;ft</p></div></article>
+    <article class="home" data-h="park-slope"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-l3.jpg" alt="A carved brownstone front in late afternoon light" width="1400" height="2489" loading="lazy" style="object-position:50% 45%"></figure></a>
+      <div><p class="price">$2,875,000</p><p class="addr">Sixth Avenue, Park&nbsp;Slope</p><p class="facts">4&nbsp;beds, 3&nbsp;baths, 3,000&nbsp;sq&nbsp;ft</p><p class="open">Open Sunday, 1&nbsp;to&nbsp;3</p></div></article>
+    <article class="home" data-h="bed-stuy"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-l4.jpg" alt="A tall red-brown corner house beside a row of brownstones" width="1600" height="1061" loading="lazy" style="object-position:62% 50%"></figure></a>
+      <div><p class="price">$1,690,000</p><p class="addr">Hancock Street, <span class="nb">Bed-Stuy</span></p><p class="facts"><span class="nb">Two-family</span>, 6&nbsp;beds, 3&nbsp;baths</p></div></article>
+    <article class="home" data-h="clinton-hill"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-l5.jpg" alt="A row of brownstones with iron railings under autumn trees" width="1400" height="1867" loading="lazy" style="object-position:60% 50%"></figure></a>
+      <div><p class="price">$3,100,000</p><p class="addr">Clinton Avenue, Clinton&nbsp;Hill</p><p class="facts">4&nbsp;beds, 3.5&nbsp;baths, 3,300&nbsp;sq&nbsp;ft</p></div></article>
+    <article class="home" data-h="park-slope"><a href="#"><figure class="stoop reveal"><img src="../../assets/photos/stoop-n3.jpg" alt="Brownstones on a corner with a street sign and a crossing" width="1400" height="1867" loading="lazy" style="object-position:50% 50%"></figure></a>
+      <div><p class="price">$2,395,000</p><p class="addr">Garfield Place, Park&nbsp;Slope</p><p class="facts">3&nbsp;beds, 2.5&nbsp;baths, 2,600&nbsp;sq&nbsp;ft</p></div></article>
+  </div>
+</section>
+
+<section class="hoods" id="hoods" aria-labelledby="h-hoods">
+  <div><h2 id="h-hoods">Where we sell</h2>
+    <ul>
+      <li><button class="hood" type="button" data-i="0" aria-current="true"><img src="../../assets/photos/stoop-n1.jpg" alt=""><b>Park&nbsp;Slope</b><span>Wide brownstone blocks a few minutes from the park.</span></button></li>
+      <li><button class="hood" type="button" data-i="1"><img src="../../assets/photos/stoop-n2.jpg" alt=""><b>Clinton&nbsp;Hill</b><span>Mansions and rowhouses on tree-lined avenues.</span></button></li>
+      <li><button class="hood" type="button" data-i="2"><img src="../../assets/photos/stoop-l3.jpg" alt=""><b>Fort&nbsp;Greene</b><span>Italianate houses around Fort&nbsp;Greene Park.</span></button></li>
+      <li><button class="hood" type="button" data-i="3"><img src="../../assets/photos/stoop-n4.jpg" alt=""><b>Bed-Stuy</b><span>The longest unbroken rows of brownstones in the city.</span></button></li>
+    </ul></div>
+  <div class="view stoop" aria-hidden="true">
+    <img class="on" src="../../assets/photos/stoop-n1.jpg" alt="" loading="lazy"><img src="../../assets/photos/stoop-n2.jpg" alt="" loading="lazy"><img src="../../assets/photos/stoop-l3.jpg" alt="" loading="lazy" style="object-position:50% 30%"><img src="../../assets/photos/stoop-n4.jpg" alt="" loading="lazy">
+  </div>
+</section>
+
+<section class="sell" id="sell" aria-labelledby="h-sell">
+  <h2 id="h-sell">Selling a house on your block?</h2>
+  <p class="lead">Three steps, and the same agent from the first visit to the closing.</p>
+  <ol class="steps">
+    <li><span class="n">1</span><h3>We walk it with you</h3><p>One hour in the house and on the block, then a price we can explain line by line.</p></li>
+    <li><span class="n">2</span><h3>We photograph it</h3><p>In daylight, with a floor plan drawn to scale, ready in five days.</p></li>
+    <li><span class="n">3</span><h3>We open it on Sundays</h3><p>Open houses until it sells, with every visitor's feedback sent to you the same evening.</p></li>
+  </ol>
+  <a class="btn" href="#">Book a walk-through</a>
+</section>
+</main>
+
+<footer>
+  <span>Stoop, Atlantic Avenue, Brooklyn</span>
+  <span>Photos on Pexels: <a href="https://www.pexels.com/photo/30726437/">Sasha Zilov</a>, <a href="https://www.pexels.com/photo/36276097/">Ben Prater</a>, <a href="https://www.pexels.com/photo/38103469/">Yura Forrat</a>, <a href="https://www.pexels.com/photo/404173/">Brandon Nickerson</a>, <a href="https://www.pexels.com/photo/29419908/">Paulo Veloso</a>, <a href="https://www.pexels.com/photo/31661836/">Ramaz Bluashvili</a>, <a href="https://www.pexels.com/photo/6408235/">Centosfotos</a>, <a href="https://www.pexels.com/photo/37785063/">Brett A</a></span>
+</footer>
+</div>
+<script>
+(function(){
+  var d=document.documentElement; d.classList.add("js");
+  var hero=document.querySelector(".hero .reveal"), himg=hero.querySelector("img");
+  var start=function(){ if(d.classList.contains("ready")) return; d.classList.add("ready"); setTimeout(function(){ hero.classList.add("go"); },180); };
+  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(function(r){ if(himg.complete) r(); else { himg.onload=r; himg.onerror=r; } })]).then(start);
+  setTimeout(start,1500);
+  // listing photos climb their stoop when they come into view, never before their picture is decoded.
+  // The clip starts at zero area, which holds back the browser's own lazy load, so each photo is fetched well ahead.
+  var rv=[].slice.call(document.querySelectorAll(".listings .reveal"));
+  function fetchAhead(fig){ var im=fig.querySelector("img"); if(fig._ready) return fig._ready; im.loading="eager";
+    fig._ready=(im.decode?im.decode():new Promise(function(r){ if(im.complete) r(); else { im.onload=r; im.onerror=r; } })).catch(function(){}); return fig._ready; }
+  function climb(fig){ if(fig._climb) return; fig._climb=true; fetchAhead(fig).then(function(){ fig.classList.add("go"); }); }
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ climb(e.target); io.unobserve(e.target); } }); },{rootMargin:"0px 0px -12% 0px"});
+    var ahead=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fetchAhead(e.target); ahead.unobserve(e.target); } }); },{rootMargin:"200% 0px 200% 0px"});
+    rv.forEach(function(x){ io.observe(x); });
+    // after the first screen has its photo, the next screens start loading
+    var heroDone=new Promise(function(r){ if(himg.complete) r(); else { himg.addEventListener("load",r); himg.addEventListener("error",r); } });
+    Promise.race([heroDone,new Promise(function(r){ setTimeout(r,1200); })]).then(function(){ rv.forEach(function(x){ ahead.observe(x); }); });
+  } else rv.forEach(function(x){ fetchAhead(x); x.classList.add("go"); });
+  // filter: cards glide to their new places instead of jumping
+  var grid=document.getElementById("grid"), cards=[].slice.call(grid.children), chips=document.querySelectorAll(".chip");
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
+  chips.forEach(function(c){ c.addEventListener("click",function(){
+    var f=c.getAttribute("data-f"); chips.forEach(function(x){ x.setAttribute("aria-pressed",x===c?"true":"false"); });
+    var before=new Map(); cards.forEach(function(el){ if(!el.hidden) before.set(el,el.getBoundingClientRect()); });
+    cards.forEach(function(el){ el.hidden=!(f==="all"||el.getAttribute("data-h")===f); if(!el.hidden) climb(el.querySelector(".reveal")); });
+    grid.classList.toggle("all",f==="all");
+    if(reduce.matches) return;
+    cards.forEach(function(el){ if(el.hidden) return; var a=before.get(el), b=el.getBoundingClientRect();
+      if(a){ el.animate([{transform:"translate("+(a.left-b.left)+"px,"+(a.top-b.top)+"px)"},{transform:"none"}],{duration:420,easing:"cubic-bezier(.2,0,0,1)"}); }
+      else { el.animate([{opacity:0,transform:"translateY(16px)"},{opacity:1,transform:"none"}],{duration:360,easing:"cubic-bezier(.23,1,.32,1)"}); }
+    });
+  }); });
+  // neighbourhoods: the photo answers the name under the pointer or the last one chosen
+  var hoods=document.querySelectorAll(".hood"), views=document.querySelectorAll(".view img");
+  function pick(i){ hoods.forEach(function(h,k){ h.setAttribute("aria-current",k===i?"true":"false"); }); views.forEach(function(v,k){ v.classList.toggle("on",k===i); }); }
+  hoods.forEach(function(h,i){ h.addEventListener("click",function(){ pick(i); }); if(window.matchMedia("(hover:hover) and (pointer:fine)").matches) h.addEventListener("mouseenter",function(){ pick(i); }); });
+})();
+</script>
+</body></html>

@@ -1,0 +1,485 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seven Words, an outdoor advertising agency in New York (concept)</title>
+<meta name="description" content="Seven Words writes and designs billboards, subway cards and street posters for brands people pass at speed.">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="color-scheme" content="light">
+<!--
+  Concept site for a made-up agency. Seven Words, its clients (Lane Six Swim School, Mira's Juice, Halvorsen Bakery)
+  and their campaigns are invented for this concept.
+  Photos (Pexels licence, free to use, no attribution required; credited anyway):
+    seven-swim.jpg          pexels.com/photo/2618792   Ingo Joseph
+    seven-oranges.jpg       pexels.com/photo/5689624   Jerms
+    seven-bread.jpg         pexels.com/photo/1383908   freestocks.org
+    seven-oranges-whole.jpg pexels.com/photo/7397930   Ilo Frey
+    seven-lane.jpg          pexels.com/photo/5326898   Ben Mack
+    seven-oven.jpg          pexels.com/photo/10481790  Chris F
+  Type: Anybody (Google Fonts, OFL), one variable family stretched from condensed to wide.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF;     /* poster paper: the page */
+  --ink:#0A0A0A;       /* black ink */
+  --quiet:#626262;     /* quiet text, neutral grey */
+  --steel:#1B1B1B;     /* the billboard's frame and pole */
+  --slot:#DCDCDC;      /* an unused word */
+  --over:#D7261E;      /* one word too many */
+  --out:cubic-bezier(.23,1,.32,1);
+  --io:cubic-bezier(.77,0,.175,1);
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Anybody",system-ui,sans-serif;font-variation-settings:"wdth" 100;font-weight:450;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.5}
+::selection{background:var(--ink);color:#fff}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
+.concept{background:var(--ink);color:#fff;font-size:14px;text-align:center;padding:6px 16px;line-height:1.4}
+.disp{font-variation-settings:"wdth" 72;font-weight:860;letter-spacing:-.01em;line-height:.98}
+
+/* the device: seven slots, one per word */
+.meter{display:inline-flex;gap:4px;vertical-align:middle}
+.meter i{width:9px;height:18px;border-radius:2px;background:var(--slot);transition:background-color .18s ease}
+.meter i.on{background:var(--ink)}
+.meter.over i{background:var(--over)}
+
+.bar{display:flex;align-items:center;gap:32px;height:72px;padding:0 48px;max-width:1536px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:12px;flex:none;white-space:nowrap;text-decoration:none;font-size:26px;line-height:1}
+.logo .meter i{width:5px;height:20px;background:var(--ink);border-radius:1.5px}
+.bar nav{margin-left:auto;display:flex;gap:30px;font-weight:600;font-size:16px}
+.bar nav a{text-decoration:none;color:var(--quiet);transition:color .15s ease}
+.bar nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;height:50px;padding:0 26px;border-radius:999px;background:var(--ink);color:#fff;font:inherit;font-weight:700;font-size:17px;text-decoration:none;border:0;cursor:pointer;transition:transform .14s var(--out),opacity .15s ease}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.28;cursor:not-allowed}
+.btn[disabled]:active{transform:none}
+
+/* first screen: one billboard, centred */
+.hero{--h1:clamp(44px,min(6.1vw,9.6svh),92px);max-width:1536px;margin:0 auto;padding:28px 48px 0;display:flex;flex-direction:column;align-items:center;min-height:calc(100svh - 101px)}
+h1{font-size:var(--h1);text-align:center;text-wrap:balance;max-width:12em}
+/* the board is a real 48 by 14 foot bulletin. Its width follows the window height: the window minus the bars, the
+   two-line headline, the lamps, the catwalk and the text under the board, so "See the work" is in the first window */
+.sign{width:min(1120px,100%);width:round(down,min(1120px,100%,max(560px,calc((100svh - 436px - 1.96 * var(--h1)) * 48 / 14 + 18px))),2px);margin-top:32px;display:flex;flex-direction:column;align-items:center;flex:1}
+.lamps{display:flex;justify-content:space-around;width:86%;height:30px}
+.lamp{position:relative;width:34px}
+.lamp::before{content:"";position:absolute;left:15px;bottom:0;width:4px;height:30px;background:var(--steel)}
+.lamp::after{content:"";position:absolute;left:0;top:0;width:34px;height:10px;border-radius:3px 3px 8px 8px;background:var(--steel)}
+.frame{width:100%;background:var(--steel);padding:9px;border-radius:3px}
+.board{position:relative;width:100%;aspect-ratio:48/14;background:#111;overflow:hidden;container-type:size;--bh:100cqh;--bw:100cqw}
+.slat{position:absolute;top:0;height:100%;transform-style:preserve-3d;transition:transform 1s var(--io);transition-delay:var(--d,0ms)}
+.face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face .shade{position:absolute;inset:0;background:#000;opacity:.6;transition:opacity 1s var(--io);transition-delay:var(--d,0ms);pointer-events:none}
+.face.lit .shade{opacity:0}
+/* one fixed seam at every slat edge, drawn over the turning slats */
+.seams{position:absolute;inset:0;z-index:40;pointer-events:none}
+.seams i{position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.3)}
+.board.rm .slat,.board.rm .shade{transition:none}
+.board{transition:opacity .2s ease}
+.board.fade{opacity:.15}
+.catwalk{width:94%;height:22px;border-top:5px solid var(--steel);background:repeating-linear-gradient(90deg,var(--steel) 0 3px,transparent 3px 46px)}
+.post{display:grid;grid-template-columns:1fr 30px 1fr;gap:56px;width:min(calc(100vw - 96px),max(100%,1020px));flex:1 0 auto;min-height:150px}
+.pole{background:linear-gradient(90deg,#0d0d0d,#2c2c2c 45%,#141414)}
+.post .l{padding-top:22px;align-self:start}
+.post .r{padding-top:22px;align-self:start;justify-self:start}
+.sub{font-size:19px;line-height:1.5;color:var(--quiet);max-width:27em;text-wrap:pretty}
+.post .l .btn{margin-top:22px}
+.now{display:flex;flex-direction:column;gap:12px}
+.now-t{font-size:15px;color:var(--quiet);line-height:1.4}
+.now-t b{display:block;color:var(--ink);font-size:18px;font-weight:700}
+.now-m{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600}
+.ctrls{display:flex;align-items:center;gap:4px;margin-left:-10px}
+.ctl{display:grid;place-items:center;width:44px;height:44px;border:0;background:none;cursor:pointer;border-radius:50%;color:var(--ink)}
+.ctl svg{width:22px;height:22px}
+.dot{display:grid;place-items:center;width:32px;height:44px;border:0;background:none;cursor:pointer;padding:0}
+.dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--slot);transition:background-color .2s ease,transform .2s var(--out)}
+.dot[aria-current="true"]::before{background:var(--ink);transform:scale(1.15)}
+
+/* the campaigns on the board (made up) */
+.ad{position:absolute;top:0;display:grid;overflow:hidden}
+.ad .pic{position:relative;overflow:hidden}
+.ad .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ad .pan{display:flex;flex-direction:column;justify-content:space-between;padding:calc(var(--bh) * .09) calc(var(--bh) * .085)}
+.ad .line{font-size:calc(var(--bh) * .135);line-height:.98;text-wrap:balance}
+.ad .cl{font-size:max(14px,calc(var(--bh) * .046));font-weight:700;letter-spacing:.01em;line-height:1.2}
+.board.land .ad{grid-template-columns:42% 1fr}
+.board.land .ad.flip{grid-template-columns:1fr 42%}
+.board.land .ad.flip .pan{order:2}
+.board.port .ad{grid-template-rows:1fr 47%}
+.board.port .ad .pan{order:2;padding:calc(var(--bw) * .075)}
+.board.port .ad .line{font-size:calc(var(--bw) * .1)}
+.ad-swim .pan{background:#0E4B59;color:#fff}
+.ad-swim .line{font-variation-settings:"wdth" 112;font-weight:800;letter-spacing:-.02em}
+.ad-swim .pic img{object-position:45% 50%}
+.ad-juice .pan{background:#F27A12;color:#140A00}
+.ad-juice .line{font-variation-settings:"wdth" 60;font-weight:900;font-size:calc(var(--bh) * .16);line-height:.94}
+.board.port .ad-juice .line{font-size:calc(var(--bw) * .118)}
+.ad-bread .pan{background:#F1EBE1;color:#3A2213}
+.ad-bread .line{font-variation-settings:"wdth" 88;font-weight:780;letter-spacing:-.015em}
+
+/* work */
+section{scroll-margin-top:24px}
+.wrap{max-width:1536px;margin:0 auto;padding:0 48px}
+.work{padding:128px 0 32px}
+h2.big{font-size:clamp(40px,5vw,72px);text-wrap:balance}
+.lede{margin-top:16px;font-size:19px;color:var(--quiet);max-width:34em}
+.case{margin-top:88px}
+.case h3{font-size:16px;font-weight:700;letter-spacing:.01em}
+.case .said{font-size:clamp(32px,3.3vw,48px);margin-top:10px;text-wrap:balance}
+.case .cnt{display:flex;align-items:center;gap:12px;margin-top:16px;font-size:15px;font-weight:600}
+.case p.d{font-size:18px;color:var(--quiet);max-width:32em}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;margin-top:18px;font-size:16px}
+.facts dt{color:var(--quiet)}
+.facts dd{margin:0;font-weight:600}
+.run{display:flex;gap:10px;padding:36px 32px;background:#E8E8E6;border-radius:6px;overflow:hidden}
+.poster{flex:1;min-width:0;aspect-ratio:2/3;display:grid;grid-template-rows:61% 1fr;background:#F27A12;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.poster:nth-child(2){transform:rotate(.5deg)}
+.poster:nth-child(3){transform:rotate(-.4deg) translateY(2px)}
+.poster:nth-child(4){transform:rotate(.3deg) translateY(-1px)}
+.poster:nth-child(5){transform:rotate(-.6deg)}
+.poster img{width:100%;height:100%;object-fit:cover;display:block}
+.poster .pl{display:flex;flex-direction:column;justify-content:space-between;padding:9% 9% 8%;color:#140A00}
+.poster b{display:block;font-variation-settings:"wdth" 60;font-weight:900;font-size:clamp(17px,1.95vw,30px);line-height:.95}
+.poster span{font-size:14px;font-weight:700}
+.case-1 .txt{display:grid;grid-template-columns:5fr 6fr;gap:64px;margin-top:36px}
+.case-2,.case-3{display:grid;grid-template-columns:7fr 5fr;gap:72px;align-items:center}
+.case-3{grid-template-columns:5fr 7fr}
+.case-3 .vis{order:2}
+.card{position:relative;border:9px solid #C8CCD0;border-radius:12px;background:#C8CCD0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.card .in{display:grid;grid-template-columns:38% 1fr;aspect-ratio:2.55/1;border-radius:4px;overflow:hidden}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.card .pan{background:#0E4B59;color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:6% 6.5%}
+.card .pan b{font-variation-settings:"wdth" 112;font-weight:800;font-size:clamp(22px,2.6vw,40px);line-height:1;letter-spacing:-.02em}
+.card .pan span{font-size:14px;font-weight:700}
+.shelter{width:min(380px,100%);margin:0 auto;border:12px solid #2A2A2A;border-radius:8px;background:#2A2A2A}
+.shelter .in{display:grid;grid-template-rows:60% 1fr;aspect-ratio:2/3;overflow:hidden;border-radius:2px}
+.shelter img{width:100%;height:100%;object-fit:cover;display:block}
+.shelter .pan{background:#F1EBE1;color:#3A2213;padding:9%;display:flex;flex-direction:column;justify-content:space-between}
+.shelter .pan b{font-variation-settings:"wdth" 88;font-weight:780;font-size:clamp(28px,2.6vw,38px);line-height:1}
+.shelter .pan span{font-size:14px;font-weight:700}
+.vis-note{margin-top:14px;font-size:15px;color:var(--quiet);text-align:center}
+
+/* how we work */
+.how{padding:128px 0 32px}
+.steps{list-style:none;padding:0;margin:56px 0 0}
+.steps li{display:grid;grid-template-columns:5fr 6fr;gap:64px;align-items:baseline;padding:30px 0}
+.steps b{font-size:clamp(30px,3.4vw,52px)}
+.steps p{font-size:18px;color:var(--quiet);max-width:30em}
+
+/* the brief, in seven words */
+.brief{padding:128px 0 120px}
+.form{margin-top:40px;max-width:860px}
+.form label{display:block;font-size:16px;font-weight:700;margin-bottom:12px}
+.field{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--ink);padding-bottom:10px;transition:border-color .18s ease}
+.field.over{border-color:var(--over)}
+.field input{flex:1;min-width:0;border:0;background:none;font:inherit;font-variation-settings:"wdth" 90;font-weight:650;font-size:clamp(24px,2.6vw,36px);color:var(--ink);padding:6px 0;outline:none}
+.field input::placeholder{color:#9A9A9A}
+.form-f{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:20px}
+.hint{display:flex;align-items:center;gap:14px;font-size:16px;font-weight:600}
+.hint.over{color:var(--over)}
+.sent{margin-top:40px;font-size:clamp(26px,2.6vw,36px)}
+.sent small{display:block;margin-top:12px;font:450 18px/1.5 "Anybody",sans-serif;font-variation-settings:"wdth" 100;color:var(--quiet);letter-spacing:0}
+.again{margin-top:20px;background:none;border:0;font:inherit;font-weight:700;font-size:17px;text-decoration:underline;text-underline-offset:6px;cursor:pointer;padding:10px 0}
+footer{padding:0 0 48px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 40px;align-items:center;justify-content:space-between;font-size:14px;color:var(--quiet)}
+
+@media (hover:hover) and (pointer:fine){.ctl:hover{background:#F0F0F0}}
+@media (max-width:900px){
+  .bar{padding:0 20px;height:64px;gap:16px}
+  .bar nav{display:none}
+  .bar .btn{margin-left:auto;height:44px;padding:0 18px;font-size:16px}
+  .logo{font-size:23px}
+  .logo .meter i{height:18px;width:4.5px}
+  .hero{padding:22px 20px 0;min-height:0}
+  h1{font-size:44px;max-width:none}
+  h1 .hl{display:block}
+  .sign{margin-top:24px;width:100%}
+  .lamps{height:22px;width:80%}
+  .lamp{width:26px}.lamp::before{left:11px;height:22px;width:3px}.lamp::after{width:26px;height:8px}
+  .frame{padding:7px}
+  .board{aspect-ratio:4/5}
+  .catwalk,.pole{display:none}
+  .post{display:flex;flex-direction:column;gap:0;min-height:0;width:100%}
+  .post .r{order:-1;padding-top:16px;width:100%}
+  .post .l{padding-top:12px}
+  .post .l .btn{width:100%;margin-top:0;order:-1}
+  .post .l{display:flex;flex-direction:column}
+  .post .l .sub{margin-top:24px;font-size:17px}
+  .now{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+  .now-t b{font-size:16px}
+  .work,.how,.brief{padding-top:88px}
+  .wrap{padding:0 20px}
+  .case{margin-top:64px}
+  .run{padding:18px 14px;gap:6px}
+  .poster:nth-child(n+4){display:none}
+  .poster .pl{padding:8%}
+  .poster b{font-size:17px}
+  .poster span{font-size:14px}
+  .case-1 .txt,.case-2,.case-3{grid-template-columns:1fr;gap:28px}
+  .case-3 .vis{order:0}
+  .case .said{font-size:32px}
+  .card{border-width:6px;border-radius:9px}
+  .card .pan span{display:none}
+  .steps{margin-top:32px}
+  .steps li{grid-template-columns:1fr;gap:8px;padding:20px 0}
+  .steps b{font-size:30px}
+  .steps p{font-size:17px}
+  .form-f .btn{width:100%}
+  .field input{font-size:24px;font-variation-settings:"wdth" 72}
+  footer .wrap{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn,.dot::before{transition:opacity .15s ease,background-color .2s ease}
+  .btn:active{transform:none}
+  .dot[aria-current="true"]::before{transform:none}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+<header class="bar">
+  <a class="logo disp" href="#top" aria-label="Seven Words, home"><span class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Seven Words</a>
+  <nav aria-label="Main"><a href="#work">Work</a><a href="#how">How we work</a><a href="#brief">Contact</a></nav>
+  <a class="btn" href="#brief">Send a brief</a>
+</header>
+
+<main id="top">
+<section class="hero">
+  <h1 class="disp"><span class="hl">Outdoor ads</span> <span class="hl">in seven words</span> <span class="hl">or&nbsp;fewer.</span></h1>
+  <div class="sign">
+    <div class="lamps" aria-hidden="true"><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span></div>
+    <div class="frame">
+      <div class="board land" id="board" role="img" aria-label="A three-sided billboard that turns between three of our campaigns">
+        <div class="ad ad-swim" data-i="0" style="position:relative;width:100%;height:100%;grid-template-columns:42% 1fr"><div class="pan"><p class="line">Learn to swim at forty. Or&nbsp;fifty.</p><p class="cl">Lane Six Swim School</p></div><div class="pic"><img src="../../assets/photos/seven-swim.jpg" alt="" width="2000" height="1362"></div></div>
+      </div>
+    </div>
+    <div class="catwalk" aria-hidden="true"></div>
+    <div class="post">
+      <div class="l"><p class="sub">We write and design billboards, subway cards and street posters for brands that people pass at&nbsp;speed.</p><a class="btn" href="#work">See the work</a></div>
+      <div class="pole" aria-hidden="true"></div>
+      <div class="r"><div class="now">
+        <p class="now-t" id="nowT" aria-live="polite"><b id="nowName">Lane Six Swim School</b><span id="nowWhere">Billboard, Long Island Expressway</span></p>
+        <div class="now-m"><span class="meter" id="nowMeter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span id="nowCount">7 words</span></div>
+        <div class="ctrls">
+          <button class="ctl" id="pause" type="button" aria-label="Pause the billboard"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg></button>
+          <button class="dot" type="button" data-go="0" aria-label="Show Lane Six Swim School" aria-current="true"></button>
+          <button class="dot" type="button" data-go="1" aria-label="Show Mira's Juice"></button>
+          <button class="dot" type="button" data-go="2" aria-label="Show Halvorsen Bakery"></button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<template id="ads">
+  <div class="ad ad-swim"><div class="pan"><p class="line disp">Learn to swim at forty. Or&nbsp;fifty.</p><p class="cl">Lane Six Swim School</p></div><div class="pic"><img src="../../assets/photos/seven-swim.jpg" alt=""></div></div>
+  <div class="ad ad-juice flip"><div class="pan"><p class="line disp">Squeezed at six. Gone by&nbsp;noon.</p><p class="cl">Mira’s Juice</p></div><div class="pic"><img src="../../assets/photos/seven-oranges.jpg" alt=""></div></div>
+  <div class="ad ad-bread"><div class="pan"><p class="line disp">Warm bread. Long line. Worth&nbsp;it.</p><p class="cl">Halvorsen Bakery</p></div><div class="pic"><img src="../../assets/photos/seven-bread.jpg" alt=""></div></div>
+</template>
+
+<section class="work" id="work">
+  <div class="wrap">
+    <h2 class="big disp">Recent work</h2>
+    <p class="lede">Three campaigns from this year. Every line on them is seven words or fewer, and every one was read from across a street before it went up.</p>
+
+    <article class="case case-1">
+      <div class="run" aria-label="Five identical posters pasted side by side on a wall">
+        <div class="poster"><img src="../../assets/photos/seven-oranges-whole.jpg" alt="" loading="lazy" decoding="async"><div class="pl"><b>Squeezed at six. Gone by&nbsp;noon.</b><span>Mira’s Juice</span></div></div>
+        <div class="poster"><img src="../../assets/photos/seven-oranges-whole.jpg" alt="" loading="lazy" decoding="async"><div class="pl"><b>Squeezed at six. Gone by&nbsp;noon.</b><span>Mira’s Juice</span></div></div>
+        <div class="poster"><img src="../../assets/photos/seven-oranges-whole.jpg" alt="" loading="lazy" decoding="async"><div class="pl"><b>Squeezed at six. Gone by&nbsp;noon.</b><span>Mira’s Juice</span></div></div>
+        <div class="poster"><img src="../../assets/photos/seven-oranges-whole.jpg" alt="" loading="lazy" decoding="async"><div class="pl"><b>Squeezed at six. Gone by&nbsp;noon.</b><span>Mira’s Juice</span></div></div>
+        <div class="poster"><img src="../../assets/photos/seven-oranges-whole.jpg" alt="" loading="lazy" decoding="async"><div class="pl"><b>Squeezed at six. Gone by&nbsp;noon.</b><span>Mira’s Juice</span></div></div>
+      </div>
+      <div class="txt">
+        <div><h3>Mira’s Juice</h3><p class="said disp">Squeezed at six. Gone by&nbsp;noon.</p><p class="cnt"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>6 words</p></div>
+        <div><p class="d">A juice bar with a forty-item menu board. We cut it to the one thing that is true every day, then pasted it in runs of five along the walk to the subway.</p>
+          <dl class="facts"><dt>Formats</dt><dd>Street posters, one billboard</dd><dt>Where</dt><dd>Astoria and Long Island City</dd><dt>When</dt><dd>Spring 2026</dd></dl></div>
+      </div>
+    </article>
+
+    <article class="case case-2">
+      <div class="vis"><div class="card"><div class="in"><img src="../../assets/photos/seven-lane.jpg" alt="Clear pool water over a dark lane line" loading="lazy" decoding="async"><div class="pan"><b>The deep end misses&nbsp;you.</b><span>Lane Six Swim School</span></div></div></div>
+        <p class="vis-note">Subway car card, 11 by 28 inches</p></div>
+      <div><h3>Lane Six Swim School</h3><p class="said disp">Learn to swim at forty. Or&nbsp;fifty.</p><p class="cnt"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>7 words</p>
+        <p class="d" style="margin-top:18px">Adult lessons at a neighbourhood pool. The people who need them are the ones too embarrassed to ask, so the lines speak to them by age, not by fear.</p>
+        <dl class="facts"><dt>Formats</dt><dd>Billboard, subway car cards</dd><dt>Where</dt><dd>Queens, the 7 line</dd><dt>When</dt><dd>Summer 2026</dd></dl></div>
+    </article>
+
+    <article class="case case-3">
+      <div class="vis"><div class="shelter"><div class="in"><img src="../../assets/photos/seven-oven.jpg" alt="Loaves baking on the racks of a bakery oven" loading="lazy" decoding="async"><div class="pan"><b>Still warm at your&nbsp;stop.</b><span>Halvorsen Bakery</span></div></div></div>
+        <p class="vis-note">Bus shelter poster, 4 by 6 feet</p></div>
+      <div><h3>Halvorsen Bakery</h3><p class="said disp">Warm bread. Long line. Worth&nbsp;it.</p><p class="cnt"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>6 words</p>
+        <p class="d" style="margin-top:18px">A bakery whose queue was its best advertising. We put the queue on a billboard and the oven on every shelter within six blocks.</p>
+        <dl class="facts"><dt>Formats</dt><dd>Billboard, bus shelters</dd><dt>Where</dt><dd>Greenpoint, Brooklyn</dd><dt>When</dt><dd>Autumn 2026</dd></dl></div>
+    </article>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2 class="big disp">How we work</h2>
+    <ol class="steps">
+      <li><b class="disp">We read everything.</b><p>Your brief, your reviews, your receipts, and the street where the poster will hang.</p></li>
+      <li><b class="disp">We write a wall of lines.</b><p>Usually about a hundred. Then we cut until one is left that a stranger reads in a single glance.</p></li>
+      <li><b class="disp">We make it big.</b><p>Type, photo and colour, printed full size and checked from across the road before anything is booked.</p></li>
+      <li><b class="disp">We put it up.</b><p>We book the boards, the cars and the walls, and we walk past every poster in person.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="brief" id="brief">
+  <div class="wrap">
+    <h2 class="big disp">Your brief, in seven words.</h2>
+    <p class="lede">The long version can come later. Start with what you would put on the billboard.</p>
+    <form class="form" id="form" novalidate>
+      <label for="b">Your brief</label>
+      <div class="field" id="field"><input id="b" name="b" type="text" autocomplete="off" placeholder="We bake bread people queue for"></div>
+      <div class="form-f">
+        <p class="hint" id="hint"><span class="meter" id="bMeter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span id="bLeft" aria-live="polite">Seven words left</span></p>
+        <button class="btn" id="send" type="submit" disabled>Send the brief</button>
+      </div>
+    </form>
+    <div id="sent" hidden><p class="sent disp">Got it. We will read it twice.<small>We reply within one working day.</small></p><button class="again" id="again" type="button">Send another</button></div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">
+  <a class="logo disp" href="#top" aria-label="Seven Words, back to top"><span class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Seven Words</a>
+  <p>New York. Photos on Pexels by Ingo Joseph, Jerms, freestocks.org, Ilo Frey, Ben Mack and Chris F. Clients and campaigns are made up.</p>
+</div></footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var board = document.getElementById("board"), tpl = document.getElementById("ads").content;
+  var CAMPAIGNS = [
+    { name: "Lane Six Swim School", where: "Billboard, Long Island Expressway", words: 7 },
+    { name: "Mira’s Juice", where: "Billboard, Queens Boulevard", words: 6 },
+    { name: "Halvorsen Bakery", where: "Billboard, McGuinness Boulevard", words: 6 }
+  ];
+  var step = 0, slats = [], N = 0, timer = 0, paused = false, visible = true, built = false;
+  var pauseBtn = document.getElementById("pause"), dots = document.querySelectorAll(".dot");
+
+  function meter(el, n, over) {
+    var is = el.querySelectorAll("i");
+    is.forEach(function (i, k) { setTimeout(function () { i.classList.toggle("on", k < n); }, reduce.matches ? 0 : k * 40); });
+    el.classList.toggle("over", !!over);
+  }
+  function caption(k) {
+    var c = CAMPAIGNS[k];
+    document.getElementById("nowName").textContent = c.name;
+    document.getElementById("nowWhere").textContent = c.where;
+    document.getElementById("nowCount").textContent = c.words + " words";
+    meter(document.getElementById("nowMeter"), c.words);
+    dots.forEach(function (d, j) { d.setAttribute("aria-current", j === k ? "true" : "false"); });
+  }
+
+  // A tri-vision board: N three-sided slats, each face holding one slice of a campaign.
+  function build() {
+    var W = board.clientWidth, H = board.clientHeight;
+    if (!W || !H) return false;
+    var port = W / H < 1.2;
+    board.classList.toggle("port", port); board.classList.toggle("land", !port);
+    N = port ? 8 : (W > 1000 ? 18 : 12);
+    board.style.setProperty("--bw", W + "px"); board.style.setProperty("--bh", H + "px");
+    board.textContent = ""; slats = [];
+    var front = ((step % 3) + 3) % 3;
+    for (var i = 0; i < N; i++) {
+      // Slat edges sit on whole pixels. A turning three-sided prism is narrowest (cos 30deg of its face) halfway
+      // between faces, so each prism is that much wider than its slot and turning slats never open a dark gap.
+      var x0 = Math.round(i * W / N), x1 = Math.round((i + 1) * W / N), w = x1 - x0;
+      var pad = Math.ceil((w / Math.cos(Math.PI / 6) - w) / 2), fw = w + 2 * pad, a = fw / (2 * Math.tan(Math.PI / 3));
+      var s = document.createElement("div");
+      s.className = "slat";
+      s.style.left = (x0 - pad) + "px"; s.style.width = fw + "px"; s.style.zIndex = N - i;
+      s.style.setProperty("--d", (i * 45) + "ms");
+      s.style.transform = "translateZ(" + (-a) + "px) rotateY(" + (-step * 120) + "deg)";
+      s._a = a;
+      for (var k = 0; k < 3; k++) {
+        var f = document.createElement("div");
+        f.className = "face" + (k === front ? " lit" : "");
+        f.style.transform = "rotateY(" + (k * 120) + "deg) translateZ(" + a + "px)";
+        var ad = tpl.children[k].cloneNode(true);
+        ad.style.width = W + "px"; ad.style.height = H + "px"; ad.style.left = (pad - x0) + "px";
+        var sh = document.createElement("span"); sh.className = "shade";
+        f.appendChild(ad); f.appendChild(sh); s.appendChild(f);
+      }
+      board.appendChild(s); slats.push(s);
+    }
+    var seams = document.createElement("div"); seams.className = "seams";
+    for (var j = 1; j < N; j++) { var line = document.createElement("i"); line.style.left = Math.round(j * W / N) + "px"; seams.appendChild(line); }
+    board.appendChild(seams);
+    built = true;
+    return true;
+  }
+  function turnTo(next) {
+    if (next === step) return;
+    var k = ((next % 3) + 3) % 3;
+    if (reduce.matches) {
+      board.classList.add("fade", "rm");
+      setTimeout(function () { step = next; apply(); caption(k); board.classList.remove("fade"); }, 200);
+      return;
+    }
+    board.classList.remove("rm");
+    step = next; apply();
+    setTimeout(function () { caption(k); }, 600);
+  }
+  function apply() {
+    var front = ((step % 3) + 3) % 3;
+    slats.forEach(function (s) {
+      s.style.transform = "translateZ(" + (-s._a) + "px) rotateY(" + (-step * 120) + "deg)";
+      s.querySelectorAll(".face").forEach(function (f, k) { f.classList.toggle("lit", k === front); });
+    });
+  }
+  function schedule(first) {
+    clearTimeout(timer);
+    if (paused || !visible || reduce.matches) return;
+    timer = setTimeout(function () { turnTo(step + 1); schedule(false); }, first ? 1500 : 5200);
+  }
+  pauseBtn.addEventListener("click", function () {
+    paused = !paused;
+    pauseBtn.setAttribute("aria-label", paused ? "Play the billboard" : "Pause the billboard");
+    pauseBtn.innerHTML = paused
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg>';
+    schedule(false);
+  });
+  dots.forEach(function (d) {
+    d.addEventListener("click", function () {
+      var want = +d.getAttribute("data-go"), cur = ((step % 3) + 3) % 3;
+      var diff = (want - cur + 3) % 3;
+      if (diff) turnTo(step + diff);
+      schedule(false);
+    });
+  });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(false); }, { threshold: .2 }).observe(board);
+  }
+  document.addEventListener("visibilitychange", function () { visible = !document.hidden; schedule(false); });
+  var rz = 0;
+  window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { board.classList.add("rm"); build(); requestAnimationFrame(function () { board.classList.remove("rm"); }); }, 160); });
+  function start() { if (build()) { caption(0); schedule(true); } }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+
+  // the brief field: seven words, then the button wakes up
+  var input = document.getElementById("b"), send = document.getElementById("send"), field = document.getElementById("field");
+  var hint = document.getElementById("hint"), left = document.getElementById("bLeft"), bm = document.getElementById("bMeter");
+  var NAMES = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
+  function words() { var t = input.value.trim(); return t ? t.split(/\s+/).length : 0; }
+  function check() {
+    var n = words(), over = n > 7;
+    bm.querySelectorAll("i").forEach(function (i, k) { i.classList.toggle("on", k < Math.min(n, 7)); });
+    bm.classList.toggle("over", over); field.classList.toggle("over", over); hint.classList.toggle("over", over);
+    left.textContent = over ? "That is " + n + " words. Cut " + (n - 7 === 1 ? "one." : (n - 7) + ".") : (7 - n === 1 ? "One word left" : NAMES[7 - n] + " words left");
+    send.disabled = n === 0 || over;
+  }
+  input.addEventListener("input", check);
+  document.getElementById("form").addEventListener("submit", function (e) {
+    e.preventDefault(); if (send.disabled) return;
+    document.getElementById("form").hidden = true; document.getElementById("sent").hidden = false;
+  });
+  document.getElementById("again").addEventListener("click", function () {
+    input.value = ""; check(); document.getElementById("sent").hidden = true; document.getElementById("form").hidden = false; input.focus();
+  });
+  check();
+})();
+</script>
+</body></html>

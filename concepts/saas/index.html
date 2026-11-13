@@ -1,0 +1,616 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baton, dispatch software for city couriers (concept)</title>
+<meta name="description" content="Baton gives each order to the nearest free rider, draws the route through the street grid and texts the customer a live link.">
+<meta name="theme-color" content="#FF5B1A">
+<meta name="color-scheme" content="light">
+<!--
+  Concept site for a made-up product. Baton is not a real company; every name, address and number on the map is sample data.
+  Photos (Pexels licence, free to use, no attribution required; credited anyway):
+    baton-crossing.jpg  pexels.com/photo/7706489  MART PRODUCTION
+    baton-door.jpg      pexels.com/photo/7706562  MART PRODUCTION
+    baton-rider.jpg     pexels.com/photo/7706370  MART PRODUCTION
+  Type: Overpass (Google Fonts, OFL), drawn after Highway Gothic, the lettering of American road signs.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F4F1;      /* pale pavement: the page */
+  --block:#E2E4DE;      /* city blocks on the map */
+  --street:#FFFFFF;     /* streets */
+  --asphalt:#14161A;    /* ink and buttons */
+  --kerb:#5A5F66;       /* quiet text */
+  --line:#D8DBD4;       /* dividers */
+  --signal:#FF5B1A;     /* live: the route and a rider on the move (the orange "don't walk" hand) */
+  --signal-ink:#C23D06; /* signal orange dark enough for small text */
+  --signal-soft:#FFE6DA;
+  --river:#C6D7DF;
+  --park:#D2E2C5;
+  --card:#FFFFFF;
+  --shadow:0 12px 40px -14px rgba(20,22,26,.30);
+  --shadow-low:0 6px 20px -10px rgba(20,22,26,.25);
+  --out:cubic-bezier(.23,1,.32,1);
+  --io:cubic-bezier(.77,0,.175,1);
+  --draw:cubic-bezier(.33,1,.68,1);
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Overpass",system-ui,sans-serif;background:var(--paper);color:var(--asphalt);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.5}
+::selection{background:var(--signal-soft);color:var(--asphalt)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.concept{background:var(--asphalt);color:#fff;font-size:14px;text-align:center;padding:6px 16px;line-height:1.4}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:32px;height:72px;padding:0 48px;background:var(--paper)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:25px;letter-spacing:-.02em;text-decoration:none;line-height:1}
+.logo svg{width:32px;height:32px;flex:none}
+.logo span{padding-top:4px}
+.bar nav{margin-left:auto;display:flex;gap:30px;font-size:16px;font-weight:600}
+.bar nav a{text-decoration:none;color:var(--kerb);transition:color .15s ease}
+.bar nav a:hover{color:var(--asphalt)}
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;height:50px;padding:3px 24px 0;border-radius:14px;background:var(--asphalt);color:#fff;font-weight:700;font-size:17px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;transition:transform .14s var(--out),background-color .15s ease}
+.btn:hover{background:#2A2D33}
+.btn:active{transform:scale(.97)}
+.lk{font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-color:var(--line);transition:text-decoration-color .15s ease}
+.lk:hover{text-decoration-color:var(--asphalt)}
+
+/* first screen: the map is the stage, the pitch sits on it like the product's own panel */
+.hero{position:relative;height:calc(100svh - 101px);min-height:680px;max-height:980px;overflow:hidden;background:var(--block)}
+.map{position:absolute;inset:0}
+.map > svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pitch{position:absolute;z-index:3;left:max(48px,calc((100vw - 1440px)/2 + 48px));top:48px;width:560px;background:var(--card);border-radius:28px;padding:44px 44px 40px;box-shadow:var(--shadow)}
+h1{font-weight:800;font-size:64px;line-height:1.02;letter-spacing:-.035em;text-wrap:balance}
+.sub{margin-top:20px;font-size:19px;line-height:1.5;color:var(--kerb);max-width:30em}
+.acts{display:flex;flex-wrap:wrap;gap:24px;align-items:center;margin-top:30px}
+
+/* map overlays (sample data) */
+.callout{position:absolute;z-index:2;width:292px;background:var(--card);border-radius:20px;padding:18px 18px 16px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .45s var(--out)}
+.callout.on{opacity:1;transform:none}
+.co-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.co-shop{font-weight:700;font-size:17px;line-height:1.2}
+.chip{display:inline-flex;align-items:center;gap:7px;height:28px;padding:3px 11px 0;border-radius:999px;background:var(--signal-soft);color:var(--signal-ink);font-weight:700;font-size:14px;white-space:nowrap}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--signal);margin-top:-3px}
+.chip.done{background:#E9EBE6;color:var(--asphalt)}
+.chip.done i{background:var(--asphalt)}
+.co-to{margin-top:4px;font-size:15px;color:var(--kerb);line-height:1.35}
+.co-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.co-eta{font-weight:800;font-size:34px;letter-spacing:-.03em;line-height:1}
+.co-who{font-size:14px;color:var(--kerb);text-align:right;line-height:1.35}
+.co-proof{display:flex;gap:12px;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:14px;color:var(--kerb);line-height:1.35}
+.co-proof img{width:52px;height:52px;border-radius:12px;object-fit:cover;object-position:62% 40%;flex:none}
+.co-proof b{display:block;color:var(--asphalt);font-size:15px}
+[hidden]{display:none!important}
+
+.riders{position:absolute;z-index:2;right:max(48px,calc((100vw - 1440px)/2 + 48px));bottom:40px;width:300px;background:var(--card);border-radius:20px;padding:16px 18px 8px;box-shadow:var(--shadow-low)}
+.riders h2{font-size:15px;font-weight:700;letter-spacing:0;margin-bottom:4px}
+.rd{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:15px;line-height:1.25}
+.rd + .rd{border-top:1px solid #EEF0EC}
+.ini{flex:none;width:30px;height:30px;border-radius:50%;background:var(--asphalt);color:#fff;font-weight:700;font-size:14px;display:grid;place-items:center;padding-top:2px}
+.rd .st{margin-left:auto;font-size:14px;color:var(--kerb);white-space:nowrap;transition:color .2s ease}
+.rd .st.live{color:var(--signal-ink);font-weight:700}
+
+.replay{position:absolute;z-index:2;left:max(48px,calc((100vw - 1440px)/2 + 48px));bottom:40px;display:inline-flex;align-items:center;gap:8px;height:44px;padding:3px 16px 0 12px;border:0;border-radius:999px;background:var(--card);color:var(--asphalt);font:700 15px/1 "Overpass",sans-serif;box-shadow:var(--shadow-low);cursor:pointer;transition:transform .14s var(--out)}
+.replay:active{transform:scale(.96)}
+.replay svg{width:20px;height:20px;margin-top:-3px}
+
+/* map drawing */
+.m-label{font:600 14px "Overpass",sans-serif;fill:#8B9097;letter-spacing:.02em}
+.route{fill:none;stroke:var(--signal);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.route-case{fill:none;stroke:#fff;stroke-width:13;stroke-linecap:round;stroke-linejoin:round}
+.pin{transform-box:fill-box;transform-origin:50% 100%}
+.pop{animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{transform:scale(.4);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+.ring{transform-box:fill-box;transform-origin:center;animation:ring .7s var(--out) both}
+@keyframes ring{from{transform:scale(1);opacity:.55}to{transform:scale(2.2);opacity:0}}
+
+/* sections */
+.wrap{max-width:1440px;margin:0 auto;padding:0 48px}
+section.how{padding:120px 0 40px}
+h2.big{font-weight:800;font-size:52px;line-height:1.05;letter-spacing:-.035em;text-wrap:balance;max-width:14em}
+.lede{margin-top:18px;font-size:19px;color:var(--kerb);max-width:34em;text-wrap:pretty}
+
+.stops{list-style:none;padding:0;margin:72px 0 0;position:relative}
+.stops::before{content:"";position:absolute;left:50%;top:10px;bottom:80px;width:0;border-left:3px dashed #B9BDB5;transform:translateX(-1.5px)}
+.stop{position:relative;display:grid;grid-template-columns:1fr 1fr;column-gap:120px;align-items:start;padding-bottom:96px}
+.stop .dot{position:absolute;left:50%;top:6px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--paper);border:3px solid #B9BDB5;transition:border-color .35s ease,background-color .35s ease}
+.stop.reached .dot{border-color:var(--signal);background:var(--signal)}
+.stop .txt{max-width:30em}
+.stop:nth-child(odd) .txt{grid-column:1;justify-self:end;text-align:left}
+.stop:nth-child(odd) .art{grid-column:2}
+.stop:nth-child(even) .txt{grid-column:2;grid-row:1}
+.stop:nth-child(even) .art{grid-column:1;grid-row:1;justify-self:end}
+.stop h3{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+.stop p{margin-top:10px;font-size:18px;color:var(--kerb);text-wrap:pretty}
+.art{width:100%;max-width:440px}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow-low);padding:20px}
+.ord .t{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--kerb)}
+.ord .s{font-weight:800;font-size:24px;letter-spacing:-.02em;margin-top:6px}
+.ord dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:15px}
+.ord dt{color:var(--kerb)}
+.ord dd{margin:0;font-weight:600}
+.pick .rd{padding:11px 0}
+.pick .rd.sel .ini{box-shadow:0 0 0 3px var(--card),0 0 0 5px var(--signal)}
+.pick .who b{display:block;font-size:16px}
+.pick .who span{font-size:14px;color:var(--kerb)}
+.ok{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:14px;font-weight:700;color:var(--signal-ink)}
+.ph{border-radius:20px;overflow:hidden;background:var(--block)}
+.ph img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.msg{margin-top:14px;max-width:340px;background:var(--card);border-radius:20px 20px 20px 6px;padding:14px 16px;box-shadow:var(--shadow-low);font-size:15px;line-height:1.45}
+.msg small{display:block;font-size:14px;color:var(--kerb);margin-bottom:4px}
+.msg u{text-decoration-color:var(--signal);text-underline-offset:3px;font-weight:700}
+.cap{margin-top:12px;font-size:15px;color:var(--kerb);line-height:1.45}
+.cap b{color:var(--asphalt)}
+
+/* pricing structure: no prices, a sizer */
+section.pricing{padding:64px 0 120px}
+.pr{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:start}
+.pr .lede{max-width:24em}
+.sizer{margin-top:40px}
+.sizer label{display:block;font-weight:700;font-size:16px}
+.count{display:block;font-weight:800;font-size:88px;letter-spacing:-.04em;line-height:1;margin-top:8px}
+.count small{font-size:22px;letter-spacing:0;font-weight:700;color:var(--kerb);margin-left:10px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin-top:12px;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--asphalt) var(--fill,20%),#D3D6CF var(--fill,20%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-11px;border-radius:50%;background:#fff;border:3px solid var(--asphalt);box-shadow:0 4px 12px -4px rgba(20,22,26,.4);transition:transform .14s var(--out)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.1)}
+input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:#D3D6CF}
+input[type=range]::-moz-range-progress{height:8px;border-radius:99px;background:var(--asphalt)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--asphalt)}
+input[type=range]:focus-visible{outline:none}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--signal-soft),0 0 0 6px var(--signal)}
+.bands{display:flex;margin-top:6px;font-size:14px;color:var(--kerb);line-height:1.3}
+.bands span{padding-top:10px;border-top:3px solid transparent;transition:color .2s ease,border-color .2s ease}
+.bands span b{display:block;font-size:15px;color:var(--asphalt)}
+.bands span.on{border-color:var(--asphalt);color:var(--asphalt)}
+.plan{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:44px}
+.plan-h{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.plan h3{font-size:44px;font-weight:800;letter-spacing:-.035em;line-height:1}
+.plan .size{font-size:16px;font-weight:700;color:var(--kerb)}
+.plan .for{margin-top:12px;font-size:18px;color:var(--kerb);max-width:32em}
+.plan ul{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:14px 28px}
+.plan li{display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4}
+.plan li svg{flex:none;width:20px;height:20px;margin-top:0}
+.plan li.new{font-weight:700}
+.swap{transition:opacity .16s ease,transform .22s var(--out)}
+.swap.out{opacity:0;transform:translateY(8px)}
+.plan-f{display:flex;flex-wrap:wrap;gap:20px 28px;align-items:center;margin-top:34px;padding-top:28px;border-top:1px solid var(--line)}
+.plan-f p{font-size:15px;color:var(--kerb);max-width:24em}
+
+/* last call */
+section.last{padding:0 0 96px}
+.last .in{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;background:var(--card);border-radius:32px;overflow:hidden;box-shadow:var(--shadow-low)}
+.last img{display:block;width:100%;height:100%;min-height:440px;object-fit:cover;object-position:50% 35%}
+.last .tx{padding:56px 56px 56px 0}
+.last h2{font-weight:800;font-size:46px;line-height:1.06;letter-spacing:-.035em;text-wrap:balance}
+.last p{margin-top:16px;font-size:18px;color:var(--kerb);max-width:28em}
+.last .btn{margin-top:30px}
+footer{padding:0 0 48px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;justify-content:space-between;font-size:14px;color:var(--kerb)}
+footer .logo{font-size:20px;color:var(--asphalt)}
+footer .logo svg{width:26px;height:26px}
+
+@media (hover:none){.bar nav a:hover,.btn:hover{background:inherit}}
+@media (max-width:1100px){
+  .pitch{width:500px;padding:36px}
+  h1{font-size:56px}
+  .riders{display:none}
+  .pr{grid-template-columns:1fr;gap:40px}
+}
+@media (max-width:760px){
+  body{font-size:17px}
+  .bar{padding:0 20px;height:64px;gap:16px}
+  .bar nav{display:none}
+  .bar .btn{margin-left:auto;height:44px;padding:3px 18px 0;font-size:16px;border-radius:12px}
+  .logo{font-size:23px}
+  .hero{height:auto;min-height:0;max-height:none;display:flex;flex-direction:column;background:var(--paper)}
+  .map{position:relative;inset:auto;height:max(380px,52svh);background:var(--block)}
+  .pitch{position:relative;left:auto;top:auto;width:auto;margin-top:-28px;border-radius:28px 28px 0 0;padding:28px 20px 32px;box-shadow:0 -10px 30px -18px rgba(20,22,26,.35)}
+  h1{font-size:40px;line-height:1.04}
+  .sub{font-size:17px;margin-top:14px}
+  .acts{margin-top:24px;gap:20px}
+  .acts .btn{flex:1 1 auto}
+  .callout{width:auto;left:12px!important;right:12px;top:12px!important;padding:12px 14px;border-radius:16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+  .callout .co-top{flex:1 1 100%}
+  .callout .co-to{display:none}
+  .callout .co-row{flex:1;margin:0;padding:0;border:0;align-items:center}
+  .callout .co-eta{font-size:24px}
+  .m-label{font-size:13px}
+  .callout .co-proof{flex:1 1 100%;margin-top:4px;padding-top:10px}
+  .replay{left:auto;right:12px;bottom:40px;height:40px;font-size:14px}
+  .wrap{padding:0 20px}
+  section.how{padding:80px 0 24px}
+  h2.big{font-size:36px}
+  .lede{font-size:17px}
+  .stops{margin-top:48px}
+  .stops::before{left:11px;bottom:60px}
+  .stop{grid-template-columns:1fr;padding:0 0 64px 44px}
+  .stop .dot{left:0;margin-left:0}
+  .stop:nth-child(n) .txt,.stop:nth-child(n) .art{grid-column:1;grid-row:auto;justify-self:start}
+  .stop .art{margin-top:22px;max-width:none}
+  .stop h3{font-size:24px}
+  .stop p{font-size:17px}
+  section.pricing{padding:24px 0 80px}
+  .count{font-size:72px}
+  .plan{padding:28px 22px;border-radius:24px}
+  .plan h3{font-size:36px}
+  .plan ul{grid-template-columns:1fr}
+  .plan-f .btn{width:100%}
+  .last .in{grid-template-columns:1fr;gap:0;border-radius:24px}
+  .last img{min-height:0;aspect-ratio:4/3;height:auto}
+  .last .tx{padding:32px 22px 36px}
+  .last h2{font-size:34px}
+  footer .wrap{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+  .callout{transition:opacity .2s ease}
+  .callout,.callout.on{transform:none}
+  .pop,.ring{animation:none}
+  .swap{transition:opacity .16s ease}
+  .swap.out{transform:none}
+  .btn,.replay{transition:background-color .15s ease}
+  .btn:active,.replay:active{transform:none}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+<header class="bar">
+  <a class="logo" href="#top" aria-label="Baton, home"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#14161A"/><rect x="13" y="4.5" width="6" height="23" rx="3" fill="#FF5B1A" transform="rotate(29 16 16)"/></svg><span>Baton</span></a>
+  <nav aria-label="Main"><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#">Sign in</a></nav>
+  <a class="btn" href="#demo">Book a demo</a>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="map" id="map" role="img" aria-label="A sample dispatch map, made up for this concept: an order from a flower shop goes to the nearest rider, who rides the drawn route to the door.">
+    <svg id="mapsvg" aria-hidden="true"></svg>
+    <div class="callout" id="callout" aria-hidden="true">
+      <div class="co-top"><span class="co-shop">Petal &amp; Stem</span><span class="chip" id="coChip"><i></i><span id="coState">New order</span></span></div>
+      <p class="co-to">Flowers to 214 W 29th St, by 3:00&nbsp;pm</p>
+      <div class="co-row" id="coRow"><span class="co-eta num" id="coEta">9 min</span><span class="co-who" id="coWho">Finding the nearest rider</span></div>
+      <div class="co-proof" id="coProof" hidden><img src="../../assets/photos/baton-door.jpg" alt=""><span><b>Delivered at 2:41&nbsp;pm</b>Left with the doorman</span></div>
+    </div>
+    <div class="riders" aria-hidden="true">
+      <h2>Riders on shift</h2>
+      <div class="rd"><span class="ini">I</span>Inés<span class="st" id="stInes">Free</span></div>
+      <div class="rd"><span class="ini">M</span>Marcus<span class="st live">2 drops on board</span></div>
+      <div class="rd"><span class="ini">D</span>Dee<span class="st">On break</span></div>
+      <div class="rd"><span class="ini">K</span>Kofi<span class="st live">1 drop on board</span></div>
+    </div>
+    <button class="replay" id="replay" type="button" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10a5.5 5.5 0 1 0 1.8-4.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5.2 2.8v3.6h3.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Watch it again</button>
+  </div>
+  <div class="pitch">
+    <h1>Every drop on one live&nbsp;map.</h1>
+    <p class="sub">Baton gives each order to the nearest free rider, draws the route and texts your customer a live link.</p>
+    <div class="acts"><a class="btn" href="#demo">Book a demo</a><a class="lk" href="#pricing">See pricing</a></div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2 class="big">From the order to the door in four&nbsp;stops.</h2>
+    <p class="lede">What Baton does between the moment an order lands and the moment it is in someone’s hands.</p>
+    <ol class="stops">
+      <li class="stop"><span class="dot" aria-hidden="true"></span>
+        <div class="txt"><h3>The order comes in</h3><p>From your online shop, a phone call or a pasted list. Baton reads the address and the time it has to be there by.</p></div>
+        <div class="art"><div class="card ord" aria-label="Sample order">
+          <div class="t"><span>Order 1182</span><span class="chip"><i></i>New</span></div>
+          <div class="s">Petal &amp; Stem</div>
+          <dl><dt>Pickup</dt><dd>18 W 27th St, ready 2:25&nbsp;pm</dd><dt>Drop</dt><dd>214 W 29th St, by 3:00&nbsp;pm</dd><dt>From</dt><dd>Your online shop</dd></dl>
+        </div></div>
+      </li>
+      <li class="stop"><span class="dot" aria-hidden="true"></span>
+        <div class="txt"><h3>The nearest free rider gets it</h3><p>Baton weighs who is closest, what they already carry and when their shift ends. You can still drag it to someone else.</p></div>
+        <div class="art"><div class="card pick" aria-label="Sample rider choice">
+          <div class="rd sel"><span class="ini">I</span><span class="who"><b>Inés</b><span>Free, 2 min away</span></span><span class="ok"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Assigned</span></div>
+          <div class="rd"><span class="ini">M</span><span class="who"><b>Marcus</b><span>2 drops on board, 6 min away</span></span></div>
+          <div class="rd"><span class="ini">D</span><span class="who"><b>Dee</b><span>On break until 2:45&nbsp;pm</span></span></div>
+        </div></div>
+      </li>
+      <li class="stop"><span class="dot" aria-hidden="true"></span>
+        <div class="txt"><h3>Your customer gets a live link</h3><p>They watch the rider come up the block, so nobody calls the shop to ask where the flowers are.</p></div>
+        <div class="art"><div class="ph"><img src="../../assets/photos/baton-crossing.jpg" alt="A courier with a yellow delivery bag riding over a crosswalk" loading="lazy" decoding="async" width="1600" height="1066"></div>
+          <div class="msg"><small>Text message, 2:31 pm</small>Your flowers from Petal &amp; Stem are on the way. Follow Inés live: <u>baton.link/7Q2K</u></div></div>
+      </li>
+      <li class="stop"><span class="dot" aria-hidden="true"></span>
+        <div class="txt"><h3>Proof at the door</h3><p>A photo and a name at every handoff, saved to the order. Disputes end with a picture, not an argument.</p></div>
+        <div class="art"><div class="ph"><img src="../../assets/photos/baton-door.jpg" alt="A courier knocking on an apartment door with a delivery bag on his back" loading="lazy" decoding="async" width="1400" height="933"></div>
+          <p class="cap"><b>Delivered at 2:41 pm.</b> Left with the doorman, photo saved to order 1182.</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap pr">
+    <div>
+      <h2 class="big">Priced by riders on shift, not by&nbsp;drops.</h2>
+      <p class="lede">A busy Friday costs the same as a quiet Tuesday. Tell us the size of your busiest shift and we send a quote the same day.</p>
+      <div class="sizer">
+        <label for="riders">Riders on your busiest shift</label>
+        <output class="count num" id="count" for="riders">12<small>riders</small></output>
+        <input type="range" id="riders" min="0" max="19" value="8" aria-valuetext="12 riders" aria-describedby="bands">
+        <div class="bands" id="bands"><span data-b="0" style="width:25%"><b>Crew</b>1 to 5</span><span data-b="1" style="width:50%"><b>Fleet</b>6 to 40</span><span data-b="2" style="width:25%"><b>City</b>41 and up</span></div>
+      </div>
+    </div>
+    <div class="plan" aria-live="polite">
+      <div class="swap" id="planBody">
+        <div class="plan-h"><h3 id="pName">Fleet</h3><span class="size" id="pSize">6 to 40 riders</span></div>
+        <p class="for" id="pFor">For courier teams covering a borough, with a dispatcher on every shift.</p>
+        <ul id="pList"></ul>
+      </div>
+      <div class="plan-f"><a class="btn" href="#demo" id="demo">Ask for a quote</a><p>Every plan has the live map, customer links and proof at the door.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="last">
+  <div class="wrap"><div class="in">
+    <img src="../../assets/photos/baton-rider.jpg" alt="A courier in a tan jacket riding toward the camera with a delivery bag" loading="lazy" decoding="async" width="1600" height="1066">
+    <div class="tx"><h2>Your riders know the streets. Give them the next&nbsp;stop.</h2><p>We set Baton up with your zones, your riders and your shop in one call, then you dispatch the next order from the map.</p><a class="btn" href="#demo">Book a demo</a></div>
+  </div></div>
+</section>
+</main>
+<footer><div class="wrap">
+  <a class="logo" href="#top" aria-label="Baton, back to top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#14161A"/><rect x="13" y="4.5" width="6" height="23" rx="3" fill="#FF5B1A" transform="rotate(29 16 16)"/></svg><span>Baton</span></a>
+  <p>Photos by MART PRODUCTION on Pexels. Names, addresses and orders are sample data.</p>
+</div></footer>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var map = document.getElementById("map"), svg = document.getElementById("mapsvg");
+  var callout = document.getElementById("callout"), coState = document.getElementById("coState"), coChip = document.getElementById("coChip");
+  var coEta = document.getElementById("coEta"), coWho = document.getElementById("coWho"), coRow = document.getElementById("coRow"), coProof = document.getElementById("coProof");
+  var stInes = document.getElementById("stInes"), replay = document.getElementById("replay");
+  var G = {}, timers = [], raf = 0, done = false;
+
+  function el(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+
+  // The street grid is turned 29 degrees, like Manhattan's. Everything is drawn in screen pixels.
+  function build() {
+    var W = map.clientWidth, H = map.clientHeight;
+    if (!W || !H) return false;
+    var phone = W < 760;
+    var AV = phone ? 168 : 236, ST = phone ? 52 : 66, aw = phone ? 12 : 16, sw = phone ? 6 : 8;
+    var cx = phone ? W * 0.52 : (W > 1100 ? W * 0.58 : W * 0.7), cy = phone ? H * 0.58 : H * 0.5;
+    var th = 29 * Math.PI / 180, c = Math.cos(th), s = Math.sin(th);
+    G = { W: W, H: H, AV: AV, ST: ST, aw: aw, sw: sw, cx: cx, cy: cy, c: c, s: s, phone: phone };
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.textContent = "";
+    var defs = el("defs", {}, svg);
+    var pat = el("pattern", { id: "blk", patternUnits: "userSpaceOnUse", width: AV, height: ST, x: -aw / 2, y: -sw / 2 }, defs);
+    el("rect", { x: aw, y: sw, width: AV - aw, height: ST - sw, rx: 3, fill: "#E2E4DE" }, pat);
+    var R = Math.hypot(W, H) + AV * 2;
+    var g = el("g", { transform: "translate(" + cx + " " + cy + ") rotate(29) translate(" + (AV / 2) + " 0)" }, svg);
+    G.g = g;
+    el("rect", { x: -R, y: -R, width: 2 * R, height: 2 * R, fill: "#FFFFFF" }, g);
+    el("rect", { x: -R, y: -R, width: 2 * R, height: 2 * R, fill: "url(#blk)" }, g);
+    // a small park, two avenue blocks east
+    el("rect", { x: AV * 1 + aw / 2, y: -ST * 6 + sw / 2, width: AV - aw, height: ST * 3 - sw, rx: 4, fill: "#D2E2C5" }, g);
+    // the river along the west side, parallel to the avenues
+    var rx0 = -AV * (phone ? 3 : 3.5);
+    el("path", { d: "M" + (-R) + " " + (-R) + " L" + (rx0 + 30) + " " + (-R) + " C" + (rx0 - 10) + " " + (-R / 3) + " " + (rx0 + 40) + " " + (R / 4) + " " + rx0 + " " + R + " L" + (-R) + " " + R + " Z", fill: "#C6D7DF" }, g);
+    // a diagonal avenue, the way Broadway cuts the grid
+    el("line", { x1: -AV * 2.6, y1: R, x2: AV * 2.2, y2: -R, stroke: "#FFFFFF", "stroke-width": aw }, g);
+    // street and avenue names go in this layer once the cards are placed (see labels)
+    G.lab = el("g", {}, g);
+    // the route: rider, up the avenue to the shop, across, then up to the door
+    var d = "M" + (-AV) + " " + (3 * ST) + " L" + (-AV) + " 0 L0 0 L0 " + (-3 * ST);
+    el("path", { d: d, "class": "route-case", opacity: 0, id: "rcase" }, g);
+    G.route = el("path", { d: d, "class": "route", id: "route" }, g);
+    G.len = G.route.getTotalLength();
+    G.pick = 3 * ST / G.len;
+    // markers live in screen space so they stay upright
+    var top = el("g", {}, svg);
+    G.top = top;
+    // other riders on the map, standing still
+    [[0, ST * 4, "M"], [-AV, -ST * 4, "D"], [-AV * 2, ST * 5, "K"]].forEach(function (r) {
+      var p = pt(r[0], r[1]); rider(top, p, r[2], false);
+    });
+    G.shop = pin(top, pt(-AV, 0), "shop");
+    G.door = pin(top, pt(0, -3 * ST), "door");
+    var start = pt(-AV, 3 * ST);
+    G.ringAt = start;
+    G.me = rider(top, start, "I", true);
+    placeCallout();
+    labels();
+    return true;
+  }
+  // Names numbered like Manhattan's west side: every street in order (the door is on W 29 St, as the order says), the
+  // avenues 8, 7 and 6 around the route. Each name takes the first spot along its street or avenue that no card, pin,
+  // or the route covers, on the computer and on the phone.
+  function labels() {
+    var AV = G.AV, ST = G.ST, fs = G.phone ? 13 : 14, mr = map.getBoundingClientRect(), boxes = [];
+    function box(e, pad) { if (!e) return; var r = e.getBoundingClientRect(); if (r.width && r.height) boxes.push([r.left - mr.left - pad, r.top - mr.top - pad, r.right - mr.left + pad, r.bottom - mr.top + pad]); }
+    box(document.querySelector(".pitch"), 10); box(document.querySelector(".riders"), 10); box(callout, 16);
+    // the callout and the replay button as they look at the end of the run
+    var was = [coRow.hidden, coProof.hidden, replay.hidden];
+    coRow.hidden = true; coProof.hidden = false; replay.hidden = false;
+    box(callout, 16); box(replay, 6);
+    coRow.hidden = was[0]; coProof.hidden = was[1]; replay.hidden = was[2];
+    var dots = [pt(-AV, 0), pt(0, -3 * ST), pt(0, 4 * ST), pt(-AV, -4 * ST), pt(-AV * 2, 5 * ST), pt(-AV, 3 * ST)];
+    var route = [[-AV, 0, -AV, 3 * ST], [-AV, 0, 0, 0], [0, -3 * ST, 0, 0]];
+    function free(x0, y0, x1, y1) {
+      for (var i = 0; i < route.length; i++) { var r = route[i]; if (x1 > r[0] - 14 && x0 < r[2] + 14 && y1 > r[1] - 14 && y0 < r[3] + 14) return false; }
+      for (var u = 0; u <= 4; u++) for (var v = 0; v <= 4; v++) {
+        var p = pt(x0 + (x1 - x0) * u / 4, y0 + (y1 - y0) * v / 4);
+        if (p.x < 8 || p.y < 8 || p.x > G.W - 8 || p.y > G.H - 8) return false;
+        for (var b = 0; b < boxes.length; b++) { var q = boxes[b]; if (p.x > q[0] && p.x < q[2] && p.y > q[1] && p.y < q[3]) return false; }
+        for (var d = 0; d < dots.length; d++) if (Math.hypot(p.x - dots[d].x, p.y - dots[d].y) < 26) return false;
+      }
+      return true;
+    }
+    function name(text) { var t = el("text", { "class": "m-label", "text-anchor": "middle" }, G.lab); t.textContent = text; t._w = t.getComputedTextLength(); return t; }
+    // a spot in the middle of a block first, in the order given; only if none is free, one slid along a block, never onto a crossing
+    function spot(blocks, room, test) {
+      for (var i = 0; i < blocks.length; i++) if (test(blocks[i], 0)) return [blocks[i], 0];
+      for (i = 0; i < blocks.length; i++) for (var d = 4; d <= room; d += 4) { if (test(blocks[i], -d)) return [blocks[i], -d]; if (test(blocks[i], d)) return [blocks[i], d]; }
+    }
+    // streets: in a block beside the route if there is room
+    for (var j = 4; j >= -6; j--) {
+      var t = name("W " + (26 - j) + " St"), w = t._w, y = j * ST;
+      var f = spot([0, -1, 1, -2, 2, -3], (AV - G.aw) / 2 - w / 2 - 8, function (k, d) { var x = (k + .5) * AV + d; return free(x - w / 2, y - fs * .6, x + w / 2, y + fs * .6); });
+      if (!f) t.remove(); else { t.setAttribute("x", (f[0] + .5) * AV + f[1]); t.setAttribute("y", y + fs * .32); }
+    }
+    // avenues: along the avenue, between two streets
+    [[-1, "8 Av"], [0, "7 Av"], [1, "6 Av"]].forEach(function (a) {
+      var t = name(a[1]), w = t._w, x = a[0] * AV;
+      var f = spot([1, 2, -1, 0, 3, -2, 4, -4, 5, -5, 6, -6], (ST - G.sw) / 2 - w / 2 - 2, function (j, d) { var y = (j + .5) * ST + d; return free(x - fs * .6, y - w / 2, x + fs * .6, y + w / 2); });
+      if (!f) t.remove(); else { t.setAttribute("transform", "translate(" + x + " " + ((f[0] + .5) * ST + f[1]) + ") rotate(-90)"); t.setAttribute("y", fs * .32); }
+    });
+  }
+  function pt(x, y) { x += G.AV / 2; return { x: G.cx + x * G.c - y * G.s, y: G.cy + x * G.s + y * G.c }; }
+  function rider(parent, p, letter, live) {
+    var g = el("g", { transform: "translate(" + p.x + " " + p.y + ")" }, parent);
+    el("circle", { r: 16, fill: "#fff" }, g);
+    el("circle", { r: 13, fill: live ? "#FF5B1A" : "#14161A" }, g);
+    var t = el("text", { y: 5, "text-anchor": "middle", fill: "#fff", style: "font:700 14px Overpass,sans-serif" }, g); t.textContent = letter;
+    return g;
+  }
+  function pin(parent, p, kind) {
+    var g = el("g", { transform: "translate(" + p.x + " " + p.y + ")", opacity: 0 }, parent);
+    var inner = el("g", { "class": "pin" }, g);
+    if (kind === "shop") {
+      el("rect", { x: -15, y: -15, width: 30, height: 30, rx: 9, fill: "#14161A", stroke: "#fff", "stroke-width": 3 }, inner);
+      el("path", { d: "M-6 -3h12l-1.4 9h-9.2z M-3 -3v-2.5a3 3 0 0 1 6 0V-3", fill: "none", stroke: "#fff", "stroke-width": 2, "stroke-linejoin": "round" }, inner);
+    } else {
+      el("circle", { r: 17, fill: "#14161A", stroke: "#fff", "stroke-width": 3 }, inner);
+      var icon = el("path", { d: "M-5 7V-7h10v14 M-5 7h10 M2 0.5h0.01", fill: "none", stroke: "#fff", "stroke-width": 2.2, "stroke-linecap": "round", "stroke-linejoin": "round" }, inner);
+      g._icon = icon; g._inner = inner;
+    }
+    return g;
+  }
+  function placeCallout() {
+    if (G.phone) { callout.style.left = ""; callout.style.top = ""; return; }
+    var p = pt(0, -3 * G.ST);
+    var x = p.x + 34, y = p.y - 70;
+    x = Math.min(x, G.W - 292 - 40); y = Math.max(24, Math.min(y, G.H - 300));
+    callout.style.left = x + "px"; callout.style.top = y + "px";
+  }
+  function setState(text, live) {
+    coState.textContent = text;
+    coChip.classList.toggle("done", !live);
+  }
+  function show(g, cls) { g.setAttribute("opacity", 1); if (cls && g._inner) { } var inner = g.querySelector(".pin"); if (inner && !reduce.matches) { inner.classList.remove("pop"); void inner.getBBox(); inner.classList.add("pop"); } }
+  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); }
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function moveTo(frac) {
+    var p = G.route.getPointAtLength(G.len * frac);
+    var q = pt(p.x - G.AV / 2, p.y);
+    G.me.setAttribute("transform", "translate(" + q.x + " " + q.y + ")");
+  }
+  function finalState() {
+    G.route.style.strokeDasharray = ""; G.route.style.strokeDashoffset = "";
+    G.shop.setAttribute("opacity", 1); G.door.setAttribute("opacity", 1);
+    moveTo(1); delivered(false);
+    callout.classList.add("on");
+  }
+  function delivered(animate) {
+    var inner = G.door._inner; inner.firstChild.setAttribute("fill", "#FF5B1A");
+    G.door._icon.setAttribute("d", "M-6.5 0.5l4.3 4.3 8.7-9");
+    G.door._icon.setAttribute("stroke-width", 3);
+    if (animate && !reduce.matches) { inner.classList.remove("pop"); void inner.getBBox(); inner.classList.add("pop"); }
+    G.me.style.opacity = 0;
+    setState("Delivered", false);
+    coRow.hidden = true; coProof.hidden = false;
+    stInes.textContent = "Free"; stInes.classList.remove("live");
+    done = true; replay.hidden = false;
+  }
+  function run() {
+    clearAll(); done = false; replay.hidden = true;
+    callout.classList.remove("on"); coRow.hidden = false; coProof.hidden = true;
+    setState("New order", true); coEta.textContent = "9 min"; coWho.textContent = "Finding the nearest rider";
+    stInes.textContent = "Free"; stInes.classList.remove("live");
+    if (!build()) return;
+    if (reduce.matches) { finalState(); return; }
+    var L = G.len;
+    G.route.style.strokeDasharray = L; G.route.style.strokeDashoffset = L;
+    at(250, function () { show(G.door); show(G.shop); });
+    at(600, function () { callout.classList.add("on"); });
+    at(1000, function () {
+      setState("Assigned", true); coWho.textContent = "Inés, cargo bike";
+      stInes.textContent = "On a drop"; stInes.classList.add("live");
+      var ring = el("circle", { r: 16, fill: "none", stroke: "#FF5B1A", "stroke-width": 3, "class": "ring", cx: G.ringAt.x, cy: G.ringAt.y }, G.top);
+      setTimeout(function () { ring.remove(); }, 800);
+    });
+    at(1150, function () {
+      var t0 = performance.now(), dur = 1150;
+      (function draw(now) {
+        var t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
+        G.route.style.strokeDashoffset = L * (1 - e);
+        if (t < 1) raf = requestAnimationFrame(draw); else { G.route.style.strokeDasharray = ""; G.route.style.strokeDashoffset = ""; }
+      })(t0);
+    });
+    at(2350, function () {
+      setState("On the way", true);
+      var t0 = performance.now(), leg1 = 700, hold = 260, leg2 = 1350, pk = G.pick;
+      (function step(now) {
+        var t = now - t0, f;
+        if (t < leg1) f = pk * ease(t / leg1);
+        else if (t < leg1 + hold) f = pk;
+        else f = pk + (1 - pk) * ease(Math.min(1, (t - leg1 - hold) / leg2));
+        moveTo(f);
+        coEta.textContent = Math.max(1, Math.ceil(9 * (1 - f))) + " min";
+                if (t < leg1 + hold + leg2) raf = requestAnimationFrame(step); else delivered(true);
+      })(t0);
+    });
+  }
+  replay.addEventListener("click", run);
+  var rz = 0;
+  window.addEventListener("resize", function () {
+    clearTimeout(rz);
+    rz = setTimeout(function () { if (map.clientWidth !== G.W || map.clientHeight !== G.H) { clearAll(); if (build()) finalState(); } }, 160);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(run); else run();
+
+  // the four stops light up as they reach the reading line
+  var stops = document.querySelectorAll(".stop");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("reached"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -30% 0px" });
+    stops.forEach(function (s) { io.observe(s); });
+  } else stops.forEach(function (s) { s.classList.add("reached"); });
+
+  // pricing: the plan follows the size of the busiest shift
+  var PLANS = [
+    { max: 5, name: "Crew", size: "1 to 5 riders", fr: "For a shop or a small crew that delivers its own orders.",
+      list: [["Live map and auto-assign", 0], ["Customer live links by text", 0], ["Photo proof at the door", 0], ["A summary of the day by e-mail", 0]] },
+    { max: 40, name: "Fleet", size: "6 to 40 riders", fr: "For courier teams covering a borough, with a dispatcher on every shift.",
+      list: [["Everything in Crew", 0], ["Shifts and breaks", 1], ["Routes with several drops", 1], ["Seats for every dispatcher", 1], ["Exports for payroll", 1]] },
+    { max: 1e9, name: "City", size: "41 riders and up", fr: "For fleets across several boroughs, with hubs and handoffs between riders.",
+      list: [["Everything in Fleet", 0], ["Zones and hubs", 1], ["Handoffs between riders", 1], ["Single sign-on", 1], ["A named person at Baton", 1]] }
+  ];
+  var tick = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="#14161A"/><path d="M5.8 10.3l2.7 2.7 5.7-5.9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var range = document.getElementById("riders"), count = document.getElementById("count"), body = document.getElementById("planBody");
+  var bands = document.querySelectorAll(".bands span"), cur = -1, swapT = 0;
+  function planFor(n) { for (var i = 0; i < PLANS.length; i++) if (n <= PLANS[i].max) return i; return 2; }
+  function fill(i) {
+    var p = PLANS[i];
+    document.getElementById("pName").textContent = p.name;
+    document.getElementById("pSize").textContent = p.size;
+    document.getElementById("pFor").textContent = p.fr;
+    document.getElementById("pList").innerHTML = p.list.map(function (l) { return '<li' + (l[1] ? ' class="new"' : '') + '>' + tick + '<span>' + l[0] + '</span></li>'; }).join("");
+  }
+  var STEPS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80];
+  function update(first) {
+    var k = +range.value, n = STEPS[k], i = planFor(n);
+    count.firstChild.nodeValue = n + (k === STEPS.length - 1 ? "+" : "");
+    count.lastChild.textContent = n === 1 ? "rider" : "riders";
+    range.setAttribute("aria-valuetext", n + (n === 1 ? " rider" : " riders"));
+    range.style.setProperty("--fill", (k / (STEPS.length - 1) * 100) + "%");
+    bands.forEach(function (b, j) { b.classList.toggle("on", j === i); });
+    if (i === cur) return;
+    cur = i;
+    if (first) { fill(i); return; }
+    clearTimeout(swapT);
+    body.classList.add("out");
+    swapT = setTimeout(function () { fill(i); body.classList.remove("out"); }, 160);
+  }
+  range.addEventListener("input", function () { update(false); });
+  update(true);
+})();
+</script>
+</body></html>

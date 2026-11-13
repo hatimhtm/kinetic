@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Long Pull, hand-pulled noodles (concept)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--chili:#B8160E;--chili-deep:#8E0F09;--broth:#FFF4E8;--scallion:#7BC043;--ink:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Bricolage Grotesque",sans-serif;background:var(--chili);color:var(--ink);-webkit-font-smoothing:antialiased}
+.concept{background:#000;color:#fff;font-size:13px;text-align:center;padding:7px 16px}.concept a{color:inherit;text-underline-offset:3px}
+.bar{display:flex;align-items:center;gap:28px;height:76px;padding:0 48px}
+.logo{font-weight:800;font-size:30px;letter-spacing:-.03em;font-variation-settings:"wdth" 75;line-height:1}
+.logo i{font-style:normal;font-variation-settings:"wdth" 100;letter-spacing:.01em;margin-right:.16em}
+.bar nav{margin-left:auto;display:flex;gap:26px;font-size:17px;font-weight:500}
+.bar a{color:inherit;text-decoration:none}.bar .btn{color:var(--chili-deep)}
+.btn{display:inline-flex;white-space:nowrap;align-items:center;height:52px;padding:0 26px;border-radius:999px;background:#fff;color:var(--chili-deep);font-weight:700;font-size:17px;text-decoration:none}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;padding:40px 48px 56px;min-height:calc(100svh - 106px);align-items:center}
+h1{font-weight:800;font-size:clamp(46px,6.6vw,104px);line-height:1.02;letter-spacing:-.025em;font-variation-settings:"wdth" 84,"opsz" 96;text-wrap:balance}
+h1 .pull{display:inline-block;transform-origin:left center;animation:pull 1.6s cubic-bezier(.2,0,0,1) .3s both}
+@keyframes pull{from{transform:scaleX(.55)}to{transform:none}}
+.sub{margin-top:26px;font-size:20px;line-height:1.5;max-width:30em;color:var(--broth)}
+.acts{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:34px}
+.acts .lk{color:#fff;font-weight:600;font-size:17px;text-underline-offset:6px}
+.halal{display:inline-flex;align-items:center;gap:10px;margin-top:40px;font-size:16px;font-weight:600}
+.halal span{width:12px;height:12px;border-radius:50%;background:var(--scallion)}
+.photo{position:relative;height:min(76svh,720px);border-radius:240px 240px 28px 28px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(60,0,0,.7)}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.bowl{position:absolute;left:-56px;bottom:40px;width:150px;height:200px;border-radius:999px 999px 24px 24px;overflow:hidden;border:6px solid var(--chili)}
+.bowl img{width:100%;height:100%;object-fit:cover}
+.photo-wrap{position:relative}
+@media (prefers-reduced-motion:reduce){h1 .pull{animation:none}}
+@media (max-width:820px){
+  .bar{padding:0 20px;height:64px}.bar nav{display:none}.bar .btn{margin-left:auto;height:44px;padding:0 18px;font-size:16px}
+  .logo{font-size:26px}
+  .hero{grid-template-columns:1fr;padding:24px 20px 40px;gap:28px;min-height:auto}
+  h1{font-size:46px}.sub{font-size:17px;margin-top:16px}.acts{margin-top:22px}.halal{margin-top:20px}
+  .photo{height:420px;border-radius:200px 200px 22px 22px}.bowl{left:auto;right:-6px;bottom:-24px;width:110px;height:150px}
+}
+</style></head><body>
+<div class="concept">Concept site. Long Pull is not a real restaurant. Photos by <a href="https://www.pexels.com/photo/27523594/" target="_blank" rel="noopener">Khang Võ Chí</a> and <a href="https://www.pexels.com/photo/32449946/" target="_blank" rel="noopener">Jahra Tasfia Reza</a> on Pexels.</div>
+<header class="bar"><div class="logo"><i>Long</i>Pull</div><nav><a href="#">Menu</a><a href="#">Find us</a><a href="#">Our cooks</a></nav><a class="btn" href="#">Order pickup</a></header>
+<section class="hero">
+  <div>
+    <h1>Beef noodles, <span class="pull">pulled by hand</span> when&nbsp;you&nbsp;order.</h1>
+    <p class="sub">Lanzhou-style and halal. Pick your thickness, from hair-thin to wide as a belt, and watch the cook stretch it at the counter.</p>
+    <div class="acts"><a class="btn" href="#">See the menu</a><a class="lk" href="#">Main Street, Flushing</a></div>
+    <p class="halal"><span></span>Halal kitchen, open every day</p>
+  </div>
+  <div class="photo-wrap"><div class="photo"><img src="../../assets/photos/noodle-pull.jpg" alt="A cook in a red shirt stretching a long noodle by hand"></div>
+  <div class="bowl"><img src="../../assets/photos/noodle-bowl.jpg" alt="Noodles lifted from a bowl"></div></div>
+</section>
+</body></html>

@@ -1,0 +1,253 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brim, mineral sunscreen and skincare (concept)</title>
+<meta name="description" content="A skincare shop for mineral sunscreen: face and body lotion, sun oil and after-sun gel, made in Queens. A concept site.">
+<meta name="theme-color" content="#EE9A3E">
+<!--
+  Concept site for the Kinetic portfolio. Brim is not a real brand.
+  Direction: hard noon sun. The page is lit like its photographs: sand-coloured ground, a diagonal band of shade,
+  products standing in the sun. The shade is the brand's device (a hat brim's shadow) and its one moment of motion:
+  on arrival the shade slides off the page like a cloud passing, then drifts as you scroll.
+  Type: Unbounded (display) and Hanken Grotesk (text), Google Fonts, OFL.
+  Photos, free Pexels licence (pexels.com/license), one session by Edward Jenner:
+    brim-yellow.jpg pexels.com/photo/4176562   brim-pumps.jpg pexels.com/photo/4176566
+    brim-duo.jpg    pexels.com/photo/4176488   brim-group.jpg pexels.com/photo/4176618
+    brim-hand.jpg   pexels.com/photo/4176564
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#EE9A3E;      /* the sunlit floor in the photographs */
+  --shade:#D97B2B;     /* the same floor in shadow */
+  --wall:#B8331A;      /* the red wall where the shadow falls */
+  --ink:#3D0B05;       /* deep shade */
+  --quiet:#6E2410;
+  --white:#FFFFFF;
+  --gut:48px; --r:22px; --rot:-135deg;
+  --glide:cubic-bezier(.77,0,.175,1); --out:cubic-bezier(.23,1,.32,1); --settle:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--sand);color:var(--ink);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--ink);color:var(--sand)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+img{display:block;max-width:100%}
+h1,h2,h3{text-wrap:balance}
+p,li,.t span{text-wrap:pretty}
+.concept{position:relative;z-index:3;background:var(--ink);color:var(--sand);font-size:14px;line-height:1.4;text-align:center;padding:8px 16px}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
+.display{font-family:"Unbounded",sans-serif}
+
+/* top bar */
+.bar{position:relative;z-index:3;display:flex;align-items:center;gap:30px;height:76px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Unbounded",sans-serif;font-weight:700;font-size:24px;letter-spacing:-.03em;text-decoration:none}
+.logo svg{width:28px;height:28px}
+.bar nav{margin-left:auto;display:flex;align-items:center;gap:28px;font-size:17px;font-weight:600}
+.bar nav a{text-decoration:none}
+.bar nav a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.bag{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 8px 0 20px;border-radius:999px;box-shadow:inset 0 0 0 2px var(--ink);font-weight:600;font-size:17px;text-decoration:none}
+.bag b{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:999px;background:var(--ink);color:var(--sand);font-size:15px;font-variant-numeric:tabular-nums}
+.bag b.bump{animation:bump .32s var(--out)}
+@keyframes bump{40%{transform:scale(1.28)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;height:56px;padding:0 30px;border-radius:999px;background:var(--wall);color:var(--white);font-weight:600;font-size:18px;text-decoration:none;transition:background-color .16s ease,transform .12s var(--out)}
+.btn:hover{background:#A02A13}
+.btn:active{transform:scale(.97)}
+
+/* first screen: one object in the sun, the headline on either side of it */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+/* a huge square whose lower edge is the shadow line, pinned through the middle of the first screen */
+/* its pivot sits on a corner of the arch (set by the script): on the computer the edge is the diagonal of the arch's
+   square half, shoulder to bottom-right corner, so the left column is in shade and the nav in sun */
+.shade{position:absolute;z-index:-1;left:var(--ax,50%);top:var(--ay,54%);width:300vmax;height:300vmax;margin:-300vmax 0 0 -150vmax;background:var(--shade);transform-origin:50% 100%;transform:rotate(var(--rot))}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,25vw) minmax(0,1fr);grid-template-rows:auto auto;column-gap:44px;min-height:calc(100svh - 110px);max-height:900px;align-content:center;padding:24px 0 64px}
+.stage h1{display:contents}
+.h-a,.h-b{font-family:"Unbounded",sans-serif;font-weight:700;font-size:clamp(48px,5.6vw,84px);line-height:1.02;letter-spacing:-.035em;align-self:end;padding-bottom:20px}
+.h-a{grid-column:1;grid-row:1;justify-self:end;text-align:right}
+.h-b{grid-column:3;grid-row:1;justify-self:start}
+.h-b span{display:block}
+.photo{grid-column:2;grid-row:1/3;position:relative;aspect-ratio:2/3;border-radius:999px 999px var(--r) var(--r);overflow:hidden;box-shadow:0 30px 60px -30px rgba(61,11,5,.55)}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 62%}
+.left{grid-column:1;grid-row:2;justify-self:end;text-align:right;align-self:start;padding-top:8px}
+.left ul{list-style:none;font-size:17px;font-weight:600;line-height:1.9}
+.right{grid-column:3;grid-row:2;align-self:start;padding-top:8px}
+.right .sub{font-size:19px;line-height:1.5;color:var(--quiet);max-width:22em}
+.right .btn{margin-top:26px}
+
+/* the range */
+section{scroll-margin-top:20px}
+.range{padding:96px 0 112px}
+.range h2,.how h2{font-family:"Unbounded",sans-serif;font-weight:700;font-size:clamp(34px,3.4vw,52px);line-height:1.08;letter-spacing:-.03em}
+.range .lead{margin-top:14px;font-size:19px;color:var(--quiet);max-width:30em}
+.shelf{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto;gap:44px 44px;margin-top:48px}
+.item{display:grid;grid-template-rows:auto 1fr;gap:18px}
+.item.big{grid-row:1/3}
+.item figure{position:relative;overflow:hidden;border-radius:var(--r);background:var(--wall)}
+.item.big figure{aspect-ratio:4/5}
+.item:not(.big) figure{aspect-ratio:16/10}
+.item figure img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--settle)}
+.item .row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.item h3{font-family:"Unbounded",sans-serif;font-weight:500;font-size:22px;line-height:1.2;letter-spacing:-.02em}
+.item p{margin-top:6px;font-size:17px;color:var(--quiet)}
+.price{font-family:"Unbounded",sans-serif;font-weight:500;font-size:22px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.add{margin-top:14px;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:999px;border:0;background:transparent;box-shadow:inset 0 0 0 2px var(--ink);color:var(--ink);font:600 17px "Hanken Grotesk",sans-serif;cursor:pointer;transition:background-color .16s ease,color .16s ease,transform .12s var(--out)}
+.add:hover{background:var(--ink);color:var(--sand)}
+.add:active{transform:scale(.97)}
+.add.done{background:var(--ink);color:var(--sand)}
+@media (hover:hover) and (pointer:fine){.item:hover figure img{transform:scale(1.035)}}
+
+/* how much to put on */
+.how{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:72px;align-items:center;padding:24px 0 120px}
+.how figure{border-radius:var(--r);overflow:hidden;aspect-ratio:4/5}
+.how figure img{width:100%;height:100%;object-fit:cover;object-position:60% 40%}
+.how ol{list-style:none;margin-top:36px;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:30px 32px}
+.how li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;align-items:baseline}
+.how .v{font-family:"Unbounded",sans-serif;font-weight:700;font-size:44px;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.how .t{font-size:19px;line-height:1.45}
+.how .t span{display:block;color:var(--quiet);font-size:17px}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;padding:28px 0 40px;font-size:15px;color:var(--quiet);box-shadow:0 -2px 0 var(--ink)}
+
+/* arrival: the shade slides off like a passing cloud, the photo comes into the sun */
+.js .shade{transform:rotate(var(--rot)) translate3d(0,40%,0)}
+.js .photo img{filter:brightness(.7) saturate(.85);transform:scale(1.06)}
+.js .h-a,.js .h-b span,.js .left,.js .right{opacity:0;transform:translateY(26px)}
+.lit .shade{transform:rotate(var(--rot)) translate3d(0,var(--drift,0px),0);transition:transform 1.3s var(--glide)}
+.lit.drifting .shade{transition:none}
+.lit .photo img{filter:none;transform:none;transition:filter 1.2s var(--glide) .1s,transform 1.4s var(--settle)}
+.lit .h-a,.lit .h-b span,.lit .left,.lit .right{opacity:1;transform:none;transition:opacity .45s ease,transform .9s var(--out)}
+.lit .h-a{transition-delay:.55s}.lit .h-b span:nth-child(1){transition-delay:.72s}.lit .h-b span:nth-child(2){transition-delay:.92s}
+.lit .right{transition-delay:1.08s}.lit .left{transition-delay:1.16s}
+@media (prefers-reduced-motion:reduce){
+  .js .shade,.lit .shade{transform:rotate(var(--rot));transition:none}
+  .js .photo img,.lit .photo img{filter:none;transform:none;transition:none}
+  .js .h-a,.js .h-b span,.js .left,.js .right{transform:none}
+  .lit .h-a,.lit .h-b span,.lit .left,.lit .right{transition:opacity .4s ease}
+  .item figure img,.item:hover figure img{transition:none;transform:none}
+  .bag b.bump{animation:none}
+}
+
+@media (max-width:900px){
+  :root{--gut:16px;--r:18px}
+  body{font-size:17px}
+  .bar{height:64px;gap:16px}.bar nav a:not(.bag){display:none}
+  .logo{font-size:21px}.logo svg{width:24px;height:24px}
+  .bag{height:44px;font-size:16px}
+  .stage{grid-template-columns:1fr;grid-template-rows:none;min-height:0;max-height:none;padding:8px 0 48px;justify-items:center;text-align:center}
+  .stage h1{display:block;font-family:"Unbounded",sans-serif;font-weight:700;font-size:40px;line-height:1.06;letter-spacing:-.035em;text-wrap:balance}
+  .h-a,.h-b{display:inline;font-size:inherit;padding:0;line-height:inherit}
+  .h-b span{display:inline}
+  .js .h-a,.js .h-b span{display:inline-block}
+  .photo{grid-column:auto;grid-row:auto;width:min(272px,72vw);aspect-ratio:4/5;margin-top:22px}
+  .photo img{object-position:50% 70%}
+  .right{grid-column:auto;grid-row:auto;padding-top:32px}
+  .right .sub{font-size:17px;margin:0 auto}
+  .right .s1{display:block}
+  .right .btn{margin-top:18px;height:52px}
+  .left{grid-column:auto;grid-row:auto;justify-self:center;text-align:center;padding-top:18px}
+  .left ul{display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:15px}
+  :root{--rot:-45deg}
+  .range{padding:64px 0 80px}
+  .range .lead{font-size:17px}
+  .shelf{grid-template-columns:1fr;gap:40px;margin-top:32px}
+  .item.big{grid-row:auto}
+  .item:not(.big) figure{aspect-ratio:4/3}
+  .item h3,.price{font-size:19px}
+  .how{grid-template-columns:1fr;gap:32px;padding:8px 0 80px}
+  .how figure{aspect-ratio:4/3}
+  .how ol{grid-template-columns:minmax(0,1fr)}
+  .how li{grid-template-columns:minmax(0,1fr);gap:6px}
+  .how .v{font-size:36px}
+  .how .t{font-size:17px}
+  footer{font-size:14px}
+}
+</style></head><body>
+<div class="concept">Concept site. Not a real business.</div>
+<div class="hero">
+  <div class="shade" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="bar">
+      <a class="logo" href="#" aria-label="Brim, home"><svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#B8331A"/><path d="M4.8 23.2A13 13 0 0 1 23.2 4.8z" fill="#3D0B05"/></svg>Brim</a>
+      <nav aria-label="Main"><a href="#range">Sunscreen</a><a href="#how">How much</a><a class="bag" href="#range" aria-label="Bag, 0 items">Bag <b id="count">0</b></a></nav>
+    </header>
+    <div class="stage">
+      <h1><span class="h-a">Shade</span> <span class="h-b"><span>you can</span> <span>put&nbsp;on.</span></span></h1>
+      <figure class="photo"><img src="../../assets/photos/brim-yellow.jpg" alt="A yellow pump bottle of sun oil and a small bottle of after-sun gel standing in hard sunlight" width="1400" height="2100"></figure>
+      <div class="right"><p class="sub"><span class="s1">Mineral sunscreen for face and body.</span> Zinc oxide only, rubs in clear, made in Queens.</p><a class="btn" href="#range">Shop sunscreen</a></div>
+      <div class="left"><ul><li>SPF 30 and SPF 50</li><li>Safe on every skin tone</li><li>From $18</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="range" id="range" aria-labelledby="h-range">
+    <h2 id="h-range">Sunscreen</h2>
+    <p class="lead">Three bottles cover a whole summer: one for every day, one for the beach, and the set for both.</p>
+    <div class="shelf">
+      <article class="item big">
+        <figure><img src="../../assets/photos/brim-pumps.jpg" alt="Two white pump bottles of daily lotion, a small and a large size" width="1600" height="2400" loading="lazy" style="object-position:58% 64%"></figure>
+        <div><div class="row"><div><h3>Daily lotion SPF 50</h3><p>Face and body. 100 ml or 250 ml.</p></div><span class="price">$24</span></div>
+        <button class="add" type="button" data-name="Daily lotion SPF 50">Add to bag</button></div>
+      </article>
+      <article class="item">
+        <figure><img src="../../assets/photos/brim-duo.jpg" alt="A yellow bottle of sun oil beside a pale green jar of after-sun gel" width="1400" height="2100" loading="lazy" style="object-position:22% 68%"></figure>
+        <div><div class="row"><div><h3>Sun oil SPF 30</h3><p>For long days outside. 150 ml.</p></div><span class="price">$26</span></div>
+        <button class="add" type="button" data-name="Sun oil SPF 30">Add to bag</button></div>
+      </article>
+      <article class="item">
+        <figure><img src="../../assets/photos/brim-group.jpg" alt="Four bottles together: two lotions, the sun oil and the after-sun gel" width="1600" height="2400" loading="lazy" style="object-position:47% 70%"></figure>
+        <div><div class="row"><div><h3>The summer set</h3><p>Daily lotion, sun oil, after-sun gel and a lip balm.</p></div><span class="price">$68</span></div>
+        <button class="add" type="button" data-name="The summer set">Add to bag</button></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="how" id="how" aria-labelledby="h-how">
+    <figure><img src="../../assets/photos/brim-hand.jpg" alt="A hand held out in hard sunlight against a red wall" width="1400" height="2100" loading="lazy"></figure>
+    <div>
+      <h2 id="h-how">How much to put on</h2>
+      <ol>
+        <li><span class="v">2 fingers</span><span class="t">Face and neck<span>Squeeze a line along two fingers, then spread it.</span></span></li>
+        <li><span class="v">30 ml</span><span class="t">Whole body<span>About a shot glass, more than most people use.</span></span></li>
+        <li><span class="v">2 hours</span><span class="t">Then again<span>And after every swim, even on a cloudy day.</span></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <span>Brim, Long Island City, Queens</span>
+    <span>Photos by <a href="https://www.pexels.com/photo/4176562/">Edward Jenner</a> on Pexels</span>
+  </footer>
+</main>
+<script>
+(function(){
+  var d=document.documentElement; d.classList.add("js");
+  var lit=false, light=function(){ if(lit) return; lit=true; requestAnimationFrame(function(){ requestAnimationFrame(function(){ d.classList.add("lit"); }); }); };
+  var img=document.querySelector(".photo img");
+  Promise.all([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(function(r){ if(img.complete) r(); else { img.onload=r; img.onerror=r; } })]).then(light);
+  setTimeout(function(){ d.classList.add("lit"); lit=true; },1600);
+  // after the arrival, the shade keeps moving with the scroll, like the sun moving on
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)"), shade=document.querySelector(".shade"), ticking=false;
+  // the shade's pivot sits on the arch: its bottom-right corner on the computer, its bottom-left corner on the phone
+  var hero=document.querySelector(".hero"), arch=document.querySelector(".photo"), phone=window.matchMedia("(max-width:900px)");
+  function anchor(){ var h=hero.getBoundingClientRect(), a=arch.getBoundingClientRect();
+    shade.style.setProperty("--ax",((phone.matches?a.left:a.right)-h.left)+"px"); shade.style.setProperty("--ay",(a.bottom-h.top)+"px"); }
+  anchor(); if(window.ResizeObserver) new ResizeObserver(anchor).observe(document.querySelector(".stage")); window.addEventListener("resize",anchor);
+  if(document.fonts) document.fonts.ready.then(anchor);
+  function drift(){ ticking=false; var y=Math.min(window.scrollY,900); shade.style.setProperty("--drift",(-y*0.35)+"px"); }
+  setTimeout(function(){ d.classList.add("drifting");
+    window.addEventListener("scroll",function(){ if(reduce.matches||ticking) return; ticking=true; requestAnimationFrame(drift); },{passive:true}); },3000);
+  // bag: the count answers every add
+  var count=0, out=document.getElementById("count"), bag=out.parentNode;
+  document.querySelectorAll(".add").forEach(function(b){
+    b.addEventListener("click",function(){
+      count++; out.textContent=count; bag.setAttribute("aria-label","Bag, "+count+(count===1?" item":" items"));
+      out.classList.remove("bump"); void out.offsetWidth; out.classList.add("bump");
+      b.classList.add("done"); b.textContent="Added";
+      clearTimeout(b._t); b._t=setTimeout(function(){ b.classList.remove("done"); b.textContent="Add to bag"; },1400);
+    });
+  });
+})();
+</script>
+</body></html>

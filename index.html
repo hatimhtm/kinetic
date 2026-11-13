@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kinetic, a studio for websites and apps</title>
+<meta name="description" content="We design and build websites, phone apps and web apps for businesses, then look after them.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Link preview. At launch, make og:image and og:url absolute (https://the-domain/assets/og.png). -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kinetic, a studio for websites and apps">
+<meta property="og:description" content="We design and build websites, phone apps and web apps for businesses.">
+<meta property="og:image" content="https://hatimhtm.github.io/kinetic/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kinetic, a studio for websites and apps.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/MonaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>
+// Motion gate, before the first paint: the full scroll scenes need no Reduce Motion, 4+ cores, 4+ GB and no data saver.
+(function (d, n) {
+  var c = n.connection || {}, q = /[?&]motion=(full|still)/.exec(location.search);
+  var weak = (n.hardwareConcurrency > 0 && n.hardwareConcurrency < 4) || (n.deviceMemory > 0 && n.deviceMemory < 4) || c.saveData === true;
+  var full = q ? q[1] === "full" : !weak && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  d.classList.add("js", full ? "scenes-on" : "still");
+  d.setAttribute("data-weak", weak && !q ? "1" : "0");
+})(document.documentElement, navigator);
+</script>
+</head>
+<body class="home">
+<!--WORDMARK--><svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><symbol id="wordmark" viewBox="54.4 -729.0 3414.4 729.0" overflow="visible"><g fill="currentColor"><path d="M54.4 0V-729H215.8V-317.9L274.2 -375.3L448.6 -536.3H649.5L413.3 -324.3L655.8 0H459.7L332 -174.5L298.2 -225.7L215.8 -153.2V0Z"/><path d="M700.4 0V-536.3H861.1V0Z"/><rect x="676.2" y="-729.0" width="208.9" height="128.6" rx="30.9"/><path d="M957.4 0V-536.3H1112.3L1118 -441.5H1125.9Q1150.6 -492.2 1202.4 -518.9Q1254.2 -545.7 1313.7 -545.7Q1361.6 -545.7 1401.3 -533Q1440.9 -520.3 1469.8 -492.3Q1498.7 -464.2 1514.8 -418Q1530.8 -371.8 1530.8 -304.9V0H1370.1V-274.6Q1370.1 -322.3 1358.8 -354.9Q1347.4 -387.5 1322.3 -404.3Q1297.1 -421 1255.3 -421Q1212.9 -421 1182.2 -402Q1151.5 -383.1 1134.8 -350.9Q1118 -318.8 1118 -278.1V0Z"/><path d="M1892.7 9.5Q1798.7 9.5 1731.7 -24.8Q1664.8 -59 1629.1 -120.7Q1593.4 -182.4 1593.4 -264.8Q1593.4 -352.3 1630.1 -415Q1666.9 -477.8 1734 -511.5Q1801.1 -545.2 1891.8 -545.2Q1994 -545.2 2061.8 -505.8Q2129.5 -466.3 2160.5 -395.9Q2191.4 -325.5 2182.2 -231.8H1758.4Q1759.3 -190.8 1776.7 -162.8Q1794.2 -134.7 1825.6 -120.3Q1857 -105.9 1898.4 -105.9Q1945 -105.9 1978.3 -123.3Q2011.6 -140.8 2021.3 -168.8H2177.6Q2168.2 -113.2 2129.4 -73.3Q2090.6 -33.4 2029.7 -12Q1968.9 9.5 1892.7 9.5ZM1755.6 -312.8 1747.3 -324.3H2031.9L2022.1 -313.2Q2022.5 -352.7 2006.9 -379.5Q1991.3 -406.2 1962.1 -419.9Q1932.8 -433.5 1891.8 -433.5Q1850.9 -433.5 1820.9 -419Q1790.8 -404.5 1774.2 -377.5Q1757.6 -350.4 1755.6 -312.8Z"/><path d="M2442.1 0Q2372.7 0 2338.3 -34.6Q2304 -69.1 2304 -138.8V-412.4H2205.5V-536.3H2304V-676L2462.8 -701.5V-536.3H2587.2V-412.4H2462.9V-179.1Q2462.9 -154.1 2475 -144.4Q2487.1 -134.7 2509.2 -134.7H2587.4V0Z"/><path d="M2658.4 0V-536.3H2819.1V0Z"/><rect x="2634.2" y="-729.0" width="208.9" height="128.6" rx="30.9"/><path d="M3180.1 9.4Q3111.9 9.4 3057.1 -10.1Q3002.4 -29.6 2963.6 -66.6Q2924.8 -103.7 2904.2 -155Q2883.6 -206.3 2883.6 -269.3Q2883.6 -333.6 2905.2 -384.7Q2926.8 -435.9 2966.8 -471.7Q3006.7 -507.6 3062.6 -526.7Q3118.4 -545.7 3186.8 -545.7Q3268 -545.7 3329.4 -519.9Q3390.8 -494 3426.7 -447.8Q3462.6 -401.7 3466.2 -340.3H3307.8Q3302.1 -366.4 3285 -384.1Q3268 -401.8 3242.5 -411Q3217.1 -420.2 3185.1 -420.2Q3151.7 -420.2 3125.4 -409.5Q3099.1 -398.8 3081.5 -378.6Q3063.8 -358.4 3054.4 -330.8Q3045.1 -303.3 3045.1 -268.6Q3045.1 -218.9 3062.2 -184.7Q3079.4 -150.6 3110.6 -133.3Q3141.9 -116.1 3184.2 -116.1Q3217.1 -116.1 3243.1 -126.2Q3269.1 -136.4 3286.5 -155Q3303.9 -173.6 3309.7 -199.1H3468.7Q3464.2 -135.3 3424.9 -88.4Q3385.5 -41.4 3322 -16Q3258.5 9.4 3180.1 9.4Z"/></g></symbol></svg><!--/WORDMARK-->
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="bar" id="bar">
+  <div class="wrap bar-in">
+    <a class="mark" href="./" data-label="{name}, home" aria-label="Kinetic, home"><svg class="wm" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav"><span class="mb-t mb-open">Menu</span><span class="mb-t mb-close" aria-hidden="true">Close</span></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="work/">Work</a>
+      <a href="services/">Services</a>
+      <a href="#process">How we work</a>
+      <a class="nav-cta" href="contact/">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- 1. First screen: the headline spans the width; three lit screens (a site, an app, a web app) sit at three depths -->
+  <section class="hm-hero" id="top" aria-labelledby="hero-title">
+    <div class="hh-room" aria-hidden="true">
+      <div class="hh-plane hh-far"><div class="hh-lean"><div class="hh-in">
+        <span class="hh-spill"><img src="assets/light/concept-saas-d.jpg" alt=""></span>
+        <span class="dev-web"><span class="dw-bar"><i></i><i></i><i></i></span><span class="dw-scr"><img src="assets/concepts/saas-computer.jpg" alt="" width="1440" height="900" fetchpriority="low"><span class="hh-dim"></span></span></span>
+      </div></div></div>
+      <div class="hh-plane hh-left"><div class="hh-lean"><div class="hh-in">
+        <span class="hh-spill"><img src="assets/light/concept-realty-d.jpg" alt=""></span>
+        <span class="dev-web"><span class="dw-bar"><i></i><i></i><i></i></span><span class="dw-scr"><img src="assets/concepts/realty-computer.jpg" alt="" width="1440" height="900"><span class="hh-dim"></span></span></span>
+      </div></div></div>
+      <div class="hh-plane hh-right"><div class="hh-lean"><div class="hh-in">
+        <span class="hh-spill"><img src="assets/light/concept-skincare-p.jpg" alt=""></span>
+        <span class="dev-ph"><span class="dp-scr"><img src="assets/concepts/skincare-phone.jpg" alt="" width="780" height="1688"><span class="hh-dim"></span></span></span>
+      </div></div></div>
+    </div>
+    <div class="hh-in-text wrap">
+      <div class="hh-top">
+        <p class="hero-credit">Made by Hatim El Hassak</p>
+        <h1 id="hero-title" class="display hh-h"><span class="hh-l hh-l1" data-split>We design and build</span> <span class="hh-l hh-l2" data-split>websites and apps.</span></h1>
+      </div>
+      <div class="hh-foot">
+        <p>An independent studio. We make websites, phone apps and web apps for businesses, then look after them.</p>
+        <div class="acts"><a class="btn btn-white" href="contact/">Start a project</a><a class="link" href="#process">How we work</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. What we make: three rows that alternate sides, each demo with its own motion -->
+  <section class="hm-make" id="make" aria-labelledby="make-title">
+    <div class="wrap mk-head" data-rise>
+      <h2 id="make-title" class="display-2">What we make</h2>
+      <p>Three kinds of work, each designed for the phone and the computer at once.</p>
+    </div>
+
+    <article class="mk-row mk-site wrap" data-side="right">
+      <div class="mk-text" data-rise>
+        <h3>Websites</h3>
+        <p>A site that says what you do and lets people act on it: book, order, call or write to you. Company sites, shops, menus and portfolios.</p>
+        <p class="mk-cap">Shown: Lampblack, one of our concept sites.</p>
+      </div>
+      <div class="mk-demo" aria-hidden="true">
+        <div class="mk-browser"><span class="dw-bar"><i></i><i></i><i></i><span class="dw-url">Lampblack</span></span><span class="mk-view"><span class="mk-page"><img src="assets/home/lampblack-page-1.jpg" alt="" width="960" height="1040" loading="lazy" decoding="async"><img src="assets/home/lampblack-page-2.jpg" alt="" width="960" height="1040" loading="lazy" decoding="async"><img src="assets/home/lampblack-page-3.jpg" alt="" width="960" height="1036" loading="lazy" decoding="async"></span></span></div>
+        <span class="mk-spill"><img src="assets/light/concept-architect-d.jpg" alt=""></span>
+      </div>
+    </article>
+
+    <article class="mk-row mk-app wrap" data-side="left">
+      <div class="mk-text" data-rise>
+        <h3>Apps</h3>
+        <p>iPhone and Android apps for your customers or your team, from the first sketch to the App Store and Google Play.</p>
+        <p class="mk-cap">Shown: sample screens for Pinch, our concept bouldering gym.</p>
+      </div>
+      <div class="mk-demo" aria-hidden="true">
+        <div class="mk-phone"><div class="ap">
+          <div class="ap-s ap-s1">
+            <div class="ap-top"><span>9:41</span><span class="ap-bat"></span></div>
+            <p class="ap-h">Classes</p>
+            <div class="ap-days"><span>Mon</span><span class="on">Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
+            <div class="ap-list">
+              <div class="ap-row"><i class="ap-hold"></i><b>Intro to bouldering</b><span>7:00 am · Wall 2</span></div>
+              <div class="ap-row ap-pick"><i class="ap-hold"></i><b>First visit</b><span>6:30 pm · Wall 1</span></div>
+              <div class="ap-row"><i class="ap-hold"></i><b>Overhang club</b><span>7:30 pm · Wall 4</span></div>
+              <div class="ap-row"><i class="ap-hold"></i><b>Kids, ages 8 to 12</b><span>Sat 10:00 am · Wall 3</span></div>
+            </div>
+            <div class="ap-tabs"><span class="on">Classes</span><span>Walls</span><span>You</span></div>
+          </div>
+          <div class="ap-s ap-s2">
+            <div class="ap-top"><span>9:41</span><span class="ap-bat"></span></div>
+            <p class="ap-back">Classes</p>
+            <div class="ap-hero"><i class="ap-hold big"></i><i class="ap-hold sm"></i><i class="ap-hold md"></i></div>
+            <p class="ap-h2">First visit</p>
+            <p class="ap-meta">Tuesday, 6:30 pm. Wall 1, with a coach beside you.</p>
+            <p class="ap-body">Shoes and chalk are included. Come ten minutes early to sign in.</p>
+            <span class="ap-btn">Book this class</span>
+          </div>
+          <div class="ap-sheet">
+            <span class="ap-grab"></span>
+            <span class="ap-check"></span>
+            <p class="ap-h3">You're booked</p>
+            <p class="ap-meta">First visit, Tuesday at 6:30 pm.</p>
+            <span class="ap-btn ap-btn-2">Add to calendar</span>
+          </div>
+        </div></div>
+        <span class="mk-spill"><img src="assets/light/concept-fitness-p.jpg" alt=""></span>
+      </div>
+    </article>
+
+    <article class="mk-row mk-web wrap" data-side="right">
+      <div class="mk-text" data-rise>
+        <h3>Web apps</h3>
+        <p>Tools that run in the browser: bookings, dashboards, client portals and the systems behind them.</p>
+        <p class="mk-cap">Shown: sample screens for Settle, our concept invoicing tool.</p>
+      </div>
+      <div class="mk-demo" aria-hidden="true">
+        <div class="mk-dash"><span class="dw-bar"><i></i><i></i><i></i><span class="dw-url">Settle</span></span><div class="sd">
+          <div class="sd-side"><b class="sd-logo"><i></i>Settle</b><span class="on">Invoices</span><span>Clients</span><span>Reminders</span><span>Settings</span></div>
+          <div class="sd-main">
+            <div class="sd-head"><b>Invoices</b><span class="sd-new">New invoice</span></div>
+            <div class="sd-chart"><span class="sd-cl">Paid this month</span><div class="sd-bars"><i style="--h:.34"></i><i style="--h:.52"></i><i style="--h:.41"></i><i style="--h:.66"></i><i style="--h:.58"></i><i style="--h:.8"></i><i style="--h:.72"></i><i style="--h:.94"></i></div></div>
+            <div class="sd-table">
+              <div class="sd-tr sd-th"><span>Client</span><span>Due</span><span>Amount</span><span>Status</span></div>
+              <div class="sd-tr"><span>Harbor &amp; Pine Studio</span><span>Oct 30</span><span>$4,800.00</span><span class="sd-st"><em class="s-sent">Sent</em><em class="s-paid">Paid</em></span></div>
+              <div class="sd-tr"><span>Ferris Bakery</span><span>Nov 2</span><span>$1,240.00</span><span class="sd-st"><em class="s-sent">Sent</em><em class="s-paid">Paid</em></span></div>
+              <div class="sd-tr"><span>North Pier Dental</span><span>Nov 5</span><span>$3,150.00</span><span class="sd-st"><em class="s-sent">Sent</em><em class="s-paid">Paid</em></span></div>
+              <div class="sd-tr"><span>Ortega Builders</span><span>Nov 9</span><span>$9,600.00</span><span class="sd-st"><em class="s-sent">Sent</em><em class="s-paid">Paid</em></span></div>
+              <div class="sd-tr"><span>Lumen Yoga</span><span>Nov 14</span><span>$720.00</span><span class="sd-st"><em class="s-sent">Sent</em><em class="s-paid">Paid</em></span></div>
+            </div>
+          </div>
+        </div></div>
+        <span class="mk-spill"><img src="assets/light/concept-settle-d.jpg" alt=""></span>
+      </div>
+    </article>
+  </section>
+
+  <!-- 3 and 4. How we work: the quiet title, then the peak, a held stage where the work happens step by step -->
+  <section class="hm-proc" id="process" aria-labelledby="process-title">
+    <div class="pr-intro wrap">
+      <h2 id="process-title" class="display pr-title" data-split>How we work</h2>
+      <p data-rise>From the first call to the updates after launch, this is how a project goes. Shown with Long Pull, one of our concept sites.</p>
+    </div>
+    <div class="pr-act" id="prAct">
+      <div class="pr-stage" id="prStage">
+        <ol class="pr-rail" aria-label="Steps, each one jumps to its part of the scene">
+          <li><button type="button" data-step="0"><span class="pr-rn">We talk</span><span class="pr-rt"><span class="pr-rf"></span></span></button></li>
+          <li><button type="button" data-step="1"><span class="pr-rn">We design</span><span class="pr-rt"><span class="pr-rf"></span></span></button></li>
+          <li><button type="button" data-step="2"><span class="pr-rn">We build</span><span class="pr-rt"><span class="pr-rf"></span></span></button></li>
+          <li><button type="button" data-step="3"><span class="pr-rn">We launch</span><span class="pr-rt"><span class="pr-rf"></span></span></button></li>
+          <li><button type="button" data-step="4"><span class="pr-rn">We keep improving</span><span class="pr-rt"><span class="pr-rf"></span></span></button></li>
+        </ol>
+
+        <div class="pr-canvas" aria-hidden="true">
+          <!-- we talk -->
+          <div class="pr-chat">
+            <p class="pr-b pr-them">We want people to order online.</p>
+            <p class="pr-b pr-us">Who orders, and on what?</p>
+            <p class="pr-b pr-them">Regulars, mostly on their phones.</p>
+            <p class="pr-b pr-us">Then we design the phone first.</p>
+          </div>
+          <div class="pr-brief"><b>Brief</b><span>Orders online</span><span>Phones first</span><span>Red, like the kitchen</span></div>
+          <!-- we design: colour and type samples -->
+          <div class="pr-swatches"><i class="sw sw-chili"></i><i class="sw sw-deep"></i><i class="sw sw-broth"></i><i class="sw sw-scallion"></i></div>
+          <div class="pr-type"><b>Aa</b><span>Heavy, narrow</span></div>
+
+          <!-- the devices -->
+          <div class="pr-devs">
+            <div class="pr-main">
+              <span class="pr-glow"><img src="assets/light/concept-noodle-d.jpg" alt=""></span>
+              <div class="pr-frame">
+                <span class="pr-bg"></span>
+                <i class="pe pe-t"></i><i class="pe pe-r"></i><i class="pe pe-b"></i><i class="pe pe-l"></i>
+                <span class="pr-chrome"><span class="pr-dots"><i></i><i></i><i></i></span><span class="pr-addr">Long Pull</span><span class="pr-status"><em class="st-draft">Draft</em><em class="st-live">Live</em></span></span>
+                <span class="pr-island"></span>
+              </div>
+              <div class="pr-view">
+                <div class="pr-clip">
+                  <span class="lp-ground"></span>
+                  <span class="wf wf-nav"></span><span class="wf wf-h1"></span><span class="wf wf-h2"></span><span class="wf wf-h3"></span><span class="wf wf-p1"></span><span class="wf wf-p2"></span><span class="wf wf-btn"></span><span class="wf wf-lnk"></span><span class="wf wf-arch"></span>
+                </div>
+                <div class="pr-pieces">
+                  <span class="lp lp-nav"><b>Long Pull</b><span class="lp-links"><span>Menu</span><span>Find us</span><span>Our cooks</span></span><span class="lp-lang">EN · ES · 中文</span><span class="lp-pill">Order pickup</span></span>
+                  <span class="lp lp-h lp-h1">Beef noodles,</span>
+                  <span class="lp lp-h lp-h2">pulled by hand</span>
+                  <span class="lp lp-h lp-h3">when you order.</span>
+                  <span class="lp lp-p">Lanzhou style and halal. Pick your thickness, then watch the cook stretch it at the counter.</span>
+                  <span class="lp lp-btns"><span class="lp-btn">See the menu</span><span class="lp-lnk">Main Street, Flushing</span></span>
+                  <span class="lp lp-chip"><i></i>Halal kitchen, open every day</span>
+                  <span class="lp lp-arch"><img class="lp-ph1" src="assets/home/noodle-pull.jpg" alt="" width="640" height="960"><img class="lp-ph2" src="assets/home/noodle-bowl.jpg" alt="" width="640" height="960" loading="lazy"><span class="lp-ready">Ready at 12:40</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="pr-side">
+              <span class="pr-sglow"><img src="assets/light/concept-noodle-p.jpg" alt=""></span>
+              <div class="pr-sframe"><i class="pe pe-t"></i><i class="pe pe-r"></i><i class="pe pe-b"></i><i class="pe pe-l"></i><span class="pr-sview"><img src="assets/concepts/noodle-phone.jpg" alt="" width="780" height="1688" loading="lazy"></span></div>
+            </div>
+          </div>
+
+          <!-- we keep improving -->
+          <div class="pr-upds">
+            <p class="pr-u"><i></i><span><b>Menu in three languages</b>English, Spanish and Chinese</span></p>
+            <p class="pr-u"><i></i><span><b>Pickup times</b>Every order shows when it is ready</span></p>
+            <p class="pr-u"><i></i><span><b>New photos</b>The winter bowls are in</span></p>
+          </div>
+        </div>
+
+        <ol class="pr-copy">
+          <li class="pr-step"><h3>We talk</h3><p>You tell us what you sell, who it is for and what it has to do. We send back a plan and a quote.</p></li>
+          <li class="pr-step"><h3>We design</h3><p>We design the key screens for the phone and the computer. You see them and say yes before we build.</p></li>
+          <li class="pr-step"><h3>We build</h3><p>We build every screen and test it on phones and computers as we go.</p></li>
+          <li class="pr-step"><h3>We launch</h3><p>We put it online and connect your domain. Apps go to the App Store and Google Play.</p></li>
+          <li class="pr-step"><h3>We keep improving</h3><p>After launch we keep it up to date and add what your customers ask for.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before our work, the bar we build to: award-winning sites made by OTHER studios (none is ours), each card naming
+       its studio and opening the real site in a new tab. A wall of lit screens: the columns glide at their own rates
+       and each screen powers on as it arrives, its light spilling into the room. Cards are built from site.js. -->
+  <section class="hm-aw" id="awards" aria-labelledby="awards-title">
+    <div class="wrap aw-in" id="awIn">
+      <div class="aw-room" id="awRoom" aria-hidden="true"></div>
+      <div class="aw-head">
+        <h2 id="awards-title" class="display aw-h" data-split>The bar we build to</h2>
+        <p class="aw-lede" data-rise>Sixteen recent award winners from Awwwards, CSS Design Awards and FWA.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Our work: the concept sites travel sideways as the page scrolls down -->
+  <section class="hm-work" id="work" aria-labelledby="work-title">
+    <div class="wk-act" id="wkAct">
+      <div class="wk-stage">
+        <div class="wk-room" id="wkRoom" aria-hidden="true"></div>
+        <div class="wk-track" id="wkTrack">
+          <div class="wk-head">
+            <h2 id="work-title" class="display-2">Our work</h2>
+            <p>Concept sites for made-up brands, each designed from its own trade. Every one says it is a concept at the top.</p>
+            <a class="link" href="work/">See all the work</a>
+          </div>
+          <div class="wk-cards" id="wkCards"></div>
+          <a class="wk-end" href="work/"><span class="wk-end-t">See all the work</span><span class="wk-end-s">Every concept, on the phone and the computer</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Who builds it: the person behind the work, lit by a passing light, and the promises the site already makes -->
+  <section class="hm-who" id="who" aria-labelledby="who-title">
+    <div class="wrap wh-in">
+      <div class="wh-name">
+        <p class="wh-k">Who builds it</p>
+        <h2 id="who-title" class="display wh-h"><span class="wh-l wh-l1"><span class="wh-unlit">Hatim</span><span class="wh-lit" aria-hidden="true"><span>Hatim</span><i class="wh-beam"></i></span></span> <span class="wh-l wh-l2"><span class="wh-unlit">El Hassak</span><span class="wh-lit" aria-hidden="true"><span>El Hassak</span><i class="wh-beam"></i></span></span></h2>
+        <p class="wh-line">He made this site. Every project comes with the same promises.</p>
+      </div>
+      <ol class="wh-list">
+        <li class="wh-p"><svg class="wh-ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14"/><path d="M8.2 14.4l3.9 3.9 7.7-8" pathLength="1"/></svg><span class="wh-t">You get the quote before any work starts.</span><i class="wh-rule" aria-hidden="true"></i></li>
+        <li class="wh-p"><svg class="wh-ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14"/><path d="M8.2 14.4l3.9 3.9 7.7-8" pathLength="1"/></svg><span class="wh-t">The quote comes with a timeline.</span><i class="wh-rule" aria-hidden="true"></i></li>
+        <li class="wh-p"><svg class="wh-ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14"/><path d="M8.2 14.4l3.9 3.9 7.7-8" pathLength="1"/></svg><span class="wh-t">You see the key screens before anything is built.</span><i class="wh-rule" aria-hidden="true"></i></li>
+        <li class="wh-p"><svg class="wh-ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14"/><path d="M8.2 14.4l3.9 3.9 7.7-8" pathLength="1"/></svg><span class="wh-t">Nothing goes live until you have read it.</span><i class="wh-rule" aria-hidden="true"></i></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. The last call, with a live proof of craft measured in the visitor's own browser -->
+  <section class="hm-end" id="start" aria-labelledby="end-title">
+    <div class="en-glow" aria-hidden="true"></div>
+    <div class="wrap en-in">
+      <h2 id="end-title" class="display en-h" data-split>Tell us what you need.</h2>
+      <div class="en-foot" data-rise>
+        <p>A few lines about your business are enough to start. We reply with questions and a quote.</p>
+        <a class="btn btn-white btn-lg" href="contact/">Start a project</a>
+      </div>
+      <div class="en-proof" id="proof" hidden>
+        <p class="ep-live"><i></i><span>Measured just now</span></p>
+        <div class="ep-m ep-load"><b class="ep-v" aria-hidden="true"><span data-v>0.0</span> s</b><span class="ep-k" aria-hidden="true">for this page to load on your device</span><span class="ep-rail" aria-hidden="true"><i></i></span></div>
+        <div class="ep-m ep-fcp"><b class="ep-v" aria-hidden="true"><span data-v>0.0</span> s</b><span class="ep-k" aria-hidden="true">for its first screen to appear</span><span class="ep-rail" aria-hidden="true"><i></i></span></div>
+        <p class="vh" data-say></p>
+        <p class="ep-note">Read from your browser's own timings, rounded to a tenth of a second.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <a class="mark" href="./" data-label="{name}, home" aria-label="Kinetic, home"><svg class="wm" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg></a>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="work/">Work</a>
+      <a href="services/">Services</a>
+      <a href="#process">How we work</a>
+      <a href="contact/">Contact</a>
+    </nav>
+    <p class="foot-line">An independent studio. <a class="link quiet" data-mail href="contact/">E-mail us</a></p>
+    <p class="credit">The award-winning sites under “The bar we build to” were made by the studios named on their cards and belong to them. Long Pull, Lampblack, Pinch, Settle and the other names in our demos and under “Our work” are our concept sites: made-up brands, each labelled as a concept. Photos in the Long Pull demo by <a href="https://www.pexels.com/photo/27523594/" target="_blank" rel="noopener">Khang Võ Chí</a> and <a href="https://www.pexels.com/photo/32449946/" target="_blank" rel="noopener">Jahra Tasfia Reza</a> on Pexels; each concept site credits its own photos.</p>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script src="nav.js"></script>
+<script src="vendor/gsap-3.15.0.min.js"></script>
+<script src="vendor/ScrollTrigger-3.15.0.min.js"></script>
+<script src="vendor/lenis-1.3.27.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
